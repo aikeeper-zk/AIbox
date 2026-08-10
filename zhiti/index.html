@@ -1,0 +1,2230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" href="LOGO_64x64.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智体共合 — 你的AI，由你掌控</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== Reset & Base ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", sans-serif;
+  color: #1c1917;
+  background: #fff7ed;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.num, .en { font-family: 'Inter', -apple-system, sans-serif; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
+
+/* ===== Colors ===== */
+:root {
+  --primary-dark: #7c2d12;
+  --primary: #c2410c;
+  --accent: #f97316;
+  --warm-bg: #fff7ed;
+  --warm-bg-alt: #ffedd5;
+  --text-dark: #1c1917;
+  --text-muted: #78716c;
+  --white: #ffffff;
+  --radius: 16px;
+  --shadow: 0 2px 12px rgba(124,45,18,0.08);
+  --shadow-hover: 0 8px 30px rgba(124,45,18,0.15);
+  --max-width: 1400px;
+  --border-light: rgba(124, 45, 18, 0.1);
+}
+
+/* ===== Utilities ===== */
+.container { max-width: var(--max-width); margin: 0 auto; padding: 0 40px; }
+.section-padding { padding: 100px 0; }
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-in-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Navigation ===== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(255, 247, 237, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(124, 45, 18, 0.08);
+  transition: background 0.3s;
+}
+.navbar.scrolled {
+  background: rgba(255, 247, 237, 0.95);
+  box-shadow: 0 2px 20px rgba(124,45,18,0.1);
+}
+.nav-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--primary-dark);
+}
+.nav-logo-icon {
+  height: 44px;
+  width: auto;
+  border-radius: 8px;
+}
+.nav-logo-text { display: flex; flex-direction: column; line-height: 1.2; }
+.nav-logo-sub { font-size: 13px; color: var(--text-muted); letter-spacing: 1px; font-weight: 500; }
+.nav-links {
+  display: flex;
+  gap: 48px;
+  align-items: center;
+}
+.nav-links a {
+  font-size: 17px;
+  color: var(--text-dark);
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--primary); }
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.3s;
+}
+.nav-links a:hover::after { width: 100%; }
+
+/* 产品下拉菜单 */
+.nav-dropdown { position: relative; }
+.nav-dropdown-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  user-select: none;
+}
+/* 覆盖 nav-links a::after，用下拉箭头替换下划线 */
+.nav-links .nav-dropdown-toggle::after {
+  content: '▾';
+  position: static;
+  display: inline;
+  width: auto;
+  height: auto;
+  background: none;
+  bottom: auto;
+  left: auto;
+  font-size: 12px;
+  margin-left: 2px;
+  opacity: 0.6;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.nav-links .nav-dropdown-toggle:hover::after {
+  transform: rotate(180deg);
+  opacity: 1;
+  width: auto;
+}
+.nav-dropdown:hover .nav-dropdown-toggle { color: var(--primary); }
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.06);
+  padding: 10px 0;
+  min-width: 220px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+}
+.nav-dropdown:hover .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+.nav-dropdown-menu a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 22px;
+  font-size: 15px;
+  color: var(--text-dark);
+  font-weight: 400;
+  white-space: nowrap;
+  transition: all 0.2s;
+  position: static;
+  text-decoration: none;
+}
+.nav-dropdown-menu a::after { display: none !important; }
+.nav-dropdown-menu a:hover {
+  background: linear-gradient(135deg, rgba(27,88,68,0.06), rgba(27,88,68,0.02));
+  color: var(--primary);
+  padding-left: 26px;
+}
+.nav-dropdown-menu .dropdown-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.nav-dropdown-divider {
+  height: 1px;
+  background: var(--border-light);
+  margin: 6px 18px;
+}
+.nav-dropdown-label {
+  padding: 8px 22px 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+.hamburger {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+}
+.hamburger span {
+  width: 28px;
+  height: 3px;
+  background: var(--primary-dark);
+  transition: all 0.3s;
+  border-radius: 2px;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  background: rgba(255,247,237,0.98);
+  backdrop-filter: blur(20px);
+  padding: 32px;
+  flex-direction: column;
+  gap: 24px;
+  box-shadow: 0 4px 20px rgba(124,45,18,0.1);
+  z-index: 999;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-size: 18px;
+  color: var(--text-dark);
+  font-weight: 500;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(124,45,18,0.06);
+}
+.mobile-menu a:hover { color: var(--primary); }
+/* 移动端手风琴展开 */
+.mobile-accordion-toggle {
+  font-size: 18px;
+  color: var(--text-dark);
+  font-weight: 500;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(124,45,18,0.06);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+}
+.mobile-accordion-toggle .accordion-arrow {
+  font-size: 12px;
+  transition: transform 0.3s;
+  color: #999;
+}
+.mobile-accordion-toggle.open .accordion-arrow {
+  transform: rotate(180deg);
+}
+.mobile-accordion-body {
+  display: none;
+  flex-direction: column;
+  padding-left: 16px;
+  margin-bottom: 4px;
+}
+.mobile-accordion-body.open {
+  display: flex;
+}
+.mobile-sub-label {
+  font-size: 11px;
+  color: #999;
+  letter-spacing: 1.5px;
+  padding: 10px 0 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.mobile-accordion-body a {
+  font-size: 16px;
+  padding: 8px 0;
+  border-bottom: none;
+  color: #555;
+}
+
+/* ===== Hero ===== */
+.hero {
+  background: linear-gradient(135deg, #7c2d12 0%, #c2410c 60%, #f97316 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 0 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(249,115,22,0.2) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(124,45,18,0.3) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero-content {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 1;
+}
+.hero-title {
+  font-size: 68px;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 28px;
+  letter-spacing: 3px;
+}
+.hero-subtitle {
+  font-size: 22px;
+  color: rgba(255,255,255,0.9);
+  text-align: center;
+  max-width: 880px;
+  margin: 0 auto 64px;
+  line-height: 1.8;
+}
+.promise-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+  margin-bottom: 64px;
+}
+.promise-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 48px 36px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.promise-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+}
+.promise-icon { font-size: 40px; margin-bottom: 16px; }
+.promise-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 12px;
+}
+.promise-desc {
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.hero-cta {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 44px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 16px rgba(249,115,22,0.3);
+}
+.btn-primary:hover {
+  background: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(194,65,12,0.4);
+}
+.btn-outline-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 44px;
+  background: transparent;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: 2px solid rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-outline-white:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ===== Product Matrix ===== */
+.products {
+  background: var(--warm-bg);
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+.section-title {
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+.section-subtitle {
+  font-size: 17px;
+  color: var(--text-muted);
+  max-width: 900px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.product-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 36px 32px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-hover);
+}
+.product-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+.product-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+.product-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+  font-family: 'Inter', sans-serif;
+}
+.product-position {
+  font-size: 15px;
+  color: var(--text-dark);
+  margin-bottom: 24px;
+  line-height: 1.7;
+  flex: 1;
+}
+.product-features {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.product-feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.product-feature-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.product-tag {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 20px;
+  background: rgba(249,115,22,0.1);
+  padding: 5px 12px;
+  border-radius: 6px;
+  display: inline-block;
+}
+.product-link {
+  font-size: 15px;
+  color: var(--primary);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.3s;
+}
+.product-link:hover { color: var(--accent); }
+.product-link-arrow { font-size: 16px; transition: transform 0.3s; }
+.product-link:hover .product-link-arrow { transform: translateX(4px); }
+
+/* ===== Pricing Table ===== */
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.pricing-table th {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  color: #fff;
+  padding: 10px 8px;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  white-space: nowrap;
+}
+.pricing-table td {
+  padding: 10px 8px;
+  text-align: center;
+  border-bottom: 1px solid rgba(124,45,18,0.08);
+  color: var(--text-dark);
+  font-size: 13px;
+}
+.pricing-table tr:last-child td { border-bottom: none; }
+.pricing-table tr:nth-child(even) td { background: rgba(249,115,22,0.03); }
+.pricing-table .price-cell {
+  font-weight: 700;
+  color: var(--primary);
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+}
+.pricing-table .tier-name {
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+/* ===== OPC Section ===== */
+.opc {
+  background: var(--warm-bg-alt);
+}
+.opc-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+.opc-text {
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--text-dark);
+}
+.opc-text p { margin-bottom: 24px; }
+.opc-highlight {
+  color: var(--primary);
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+}
+.data-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.data-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.data-card-label {
+  font-size: 15px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.data-card-values {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Inter', sans-serif;
+}
+.data-card-old {
+  font-size: 18px;
+  color: var(--text-muted);
+}
+.data-card-arrow { color: var(--accent); font-size: 22px; }
+.data-card-new {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+.data-card-multiplier {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--accent);
+  background: rgba(249,115,22,0.1);
+  padding: 6px 14px;
+  border-radius: 8px;
+}
+.counter { font-family: 'Inter', sans-serif; }
+.opc-steps {
+  margin-top: 56px;
+}
+.opc-steps-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 24px;
+  text-align: center;
+}
+.opc-steps-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+.opc-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 24px;
+  position: relative;
+}
+.opc-step-num {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--primary-dark), var(--accent));
+  border-radius: 50%;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+}
+.opc-step-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+.opc-step-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  max-width: 160px;
+}
+.opc-step-arrow {
+  font-size: 28px;
+  color: var(--accent);
+  padding: 0 4px;
+}
+.opc-cta {
+  text-align: center;
+  margin-top: 40px;
+  padding: 32px;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  border-radius: var(--radius);
+  color: #fff;
+}
+.opc-cta-text {
+  font-size: 17px;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+.opc-cta .btn-primary {
+  background: #fff;
+  color: var(--primary-dark);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+.opc-cta .btn-primary:hover {
+  background: var(--warm-bg);
+}
+
+/* ===== Data Sovereignty ===== */
+.sovereignty {
+  background: linear-gradient(135deg, #7c2d12 0%, #c2410c 100%);
+  color: #fff;
+}
+.sovereignty .section-title { color: #fff; }
+.sovereignty .section-subtitle { color: rgba(255,255,255,0.85); }
+.sovereignty-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.sovereignty-card {
+  background: rgba(255,255,255,0.95);
+  border-radius: var(--radius);
+  padding: 44px 36px;
+  color: var(--text-dark);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  transition: transform 0.3s;
+}
+.sovereignty-card:hover { transform: translateY(-4px); }
+.sovereignty-card-icon { font-size: 40px; margin-bottom: 14px; }
+.sovereignty-card-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 14px;
+}
+.sovereignty-card-body {
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+/* ===== Architecture ===== */
+.architecture {
+  background: var(--warm-bg);
+}
+.arch-tower {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.arch-layer {
+  padding: 26px 32px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: transform 0.3s;
+  cursor: default;
+  position: relative;
+}
+.arch-layer:hover { transform: scale(1.02); }
+.arch-layer-num {
+  font-size: 15px;
+  font-weight: 800;
+  font-family: 'Inter', sans-serif;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.25);
+  border-radius: 8px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.arch-layer-title {
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.arch-layer-desc {
+  font-size: 15px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+/* Layer colors from top (01) bright orange to bottom (06) dark */
+.arch-layer-01 { background: #f97316; color: #fff; border-radius: 12px 12px 0 0; }
+.arch-layer-02 { background: #ea580c; color: #fff; }
+.arch-layer-03 { background: #c2410c; color: #fff; }
+.arch-layer-04 { background: #9a3412; color: #fff; }
+.arch-layer-05 { background: #7c2d12; color: #fff; }
+.arch-layer-06 { background: #5c1d0a; color: #fff; border-radius: 0 0 12px 12px; }
+
+/* ===== Compliance ===== */
+.compliance {
+  background: var(--warm-bg-alt);
+}
+.compliance-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.compliance-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 36px 32px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.compliance-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+.compliance-icon { font-size: 34px; margin-bottom: 14px; }
+.compliance-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 10px;
+}
+.compliance-desc {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* ===== Milestones ===== */
+.milestones {
+  background: var(--warm-bg);
+}
+.timeline {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  padding-left: 48px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--accent), var(--primary-dark));
+  border-radius: 3px;
+}
+.timeline-item {
+  position: relative;
+  padding: 28px 0;
+}
+.timeline-dot {
+  position: absolute;
+  left: -34px;
+  top: 32px;
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  border-radius: 50%;
+  border: 3px solid var(--warm-bg);
+  box-shadow: 0 0 0 3px var(--accent);
+}
+.timeline-date {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 6px;
+}
+.timeline-content {
+  font-size: 17px;
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+.timeline-emoji { margin-right: 6px; }
+
+/* ===== Footer ===== */
+.footer {
+  background: var(--primary-dark);
+  color: rgba(255,255,255,0.9);
+  padding: 64px 0 36px;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 0.9fr 0.6fr 0.6fr auto;
+  gap: 36px;
+  margin-bottom: 36px;
+}
+.footer-brand { max-width: 520px; }
+.footer-brand-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.footer-brand-desc {
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.7);
+}
+.footer-nav-heading {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.footer-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.footer-nav-links a {
+  font-size: 15px;
+  color: rgba(255,255,255,0.7);
+  transition: color 0.3s;
+}
+.footer-nav-links a:hover { color: var(--accent); }
+.footer-nav-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 1.2px;
+  padding: 10px 0 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.footer-nav-sub:first-child { padding-top: 0; }
+.footer-promises {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 14px;
+  line-height: 1.8;
+}
+.footer-compliance {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+}
+.footer-qr {
+  text-align: center;
+}
+.footer-qr-heading {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.footer-qr-codes {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.footer-qr-item img {
+  width: 110px;
+  height: 110px;
+  border-radius: 8px;
+  background: #fff;
+  padding: 4px;
+  display: block;
+}
+.footer-qr-item-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  margin-top: 8px;
+}
+.footer-divider {
+  border: none;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  margin-bottom: 28px;
+}
+.footer-copy {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ===== Custom Cursor ===== */
+.custom-cursor {
+  width: 20px; height: 20px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, border-color 0.3s, background 0.3s;
+  transform: translate(-50%, -50%);
+}
+.custom-cursor.hover { transform: translate(-50%, -50%) scale(2); background: rgba(249,115,22,0.15); border-color: var(--primary); }
+@media (max-width: 768px) { .custom-cursor { display: none; } }
+
+/* ===== Scroll Progress Bar ===== */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--primary-dark));
+  z-index: 1001; width: 0; transition: width 0.1s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ===== Hero Animated Gradient ===== */
+.hero {
+  background: linear-gradient(-45deg, #7c2d12, #c2410c, #f97316, #ea580c, #9a3412, #7c2d12);
+  background-size: 400% 400%;
+  animation: heroGradient 12s ease infinite;
+}
+@keyframes heroGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== Hero Floating Particles ===== */
+.hero-particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.hero-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(-100vh) translateX(40px) scale(0.3); opacity: 0; }
+}
+
+/* ===== 3D Globe in Hero ===== */
+.hero-globe {
+  position: absolute;
+  right: -200px; top: 50%; transform: translateY(-50%);
+  width: 600px; height: 600px;
+  pointer-events: none; z-index: 0;
+  opacity: 0.08;
+}
+@media (max-width: 1024px) { .hero-globe { right: -300px; width: 400px; height: 400px; opacity: 0.05; } }
+@media (max-width: 768px) { .hero-globe { display: none; } }
+
+/* ===== Glassmorphism Promise Cards ===== */
+.promise-card {
+  background: rgba(255,255,255,0.12) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.promise-card:hover {
+  background: rgba(255,255,255,0.2) !important;
+  border-color: rgba(255,255,255,0.5);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.2), 0 0 60px rgba(249,115,22,0.15);
+}
+.promise-title { color: #fff !important; }
+.promise-desc { color: rgba(255,255,255,0.85) !important; }
+
+/* ===== CTA Glow Pulse ===== */
+.btn-primary {
+  position: relative;
+  overflow: visible;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 16px;
+  background: rgba(249,115,22,0.4);
+  z-index: -1;
+  animation: ctaPulse 2s ease-in-out infinite;
+}
+.btn-primary:hover::after { animation: ctaPulseFast 0.8s ease-in-out infinite; }
+@keyframes ctaPulse {
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.08); opacity: 0.1; }
+}
+@keyframes ctaPulseFast {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.06); opacity: 0.15; }
+}
+
+/* ===== Typewriter ===== */
+.typewriter-cursor {
+  display: inline-block;
+  width: 3px; height: 1em;
+  background: #fff;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 0.8s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ===== Product Card Gradient Top Bar ===== */
+.product-card {
+  border-top: 4px solid transparent;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease, border-color 0.4s;
+}
+.product-card:nth-child(1) { border-top-color: #f97316; }
+.product-card:nth-child(2) { border-top-color: #8b5cf6; }
+.product-card:nth-child(3) { border-top-color: #06b6d4; }
+.product-card:nth-child(4) { border-top-color: #10b981; }
+.product-card:nth-child(5) { border-top-color: #ef4444; }
+.product-card:nth-child(6) { border-top-color: #f59e0b; }
+.product-card:nth-child(7) { border-top-color: #8b5cf6; }
+.product-card:nth-child(8) { border-top-color: #ec4899; }
+.product-card:hover { border-top-width: 6px; }
+
+/* ===== 3D Tilt ===== */
+.tilt-container { perspective: 800px; }
+.product-card.tilt-card {
+  will-change: transform;
+}
+
+/* ===== Wave Dividers ===== */
+.wave-divider { position: relative; overflow: hidden; line-height: 0; }
+.wave-divider svg { display: block; width: 100%; height: auto; }
+.wave-divider-top { margin-top: -1px; }
+.wave-divider-bottom { margin-bottom: -1px; }
+
+/* ===== Parallax ===== */
+.parallax-bg {
+  position: absolute; top: 0; left: 0; width: 100%; height: 120%;
+  background-size: cover; will-change: transform; pointer-events: none;
+}
+
+/* ===== Back to Top ===== */
+.back-to-top {
+  position: fixed; bottom: 40px; right: 40px;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  opacity: 0; visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999;
+  box-shadow: 0 4px 20px rgba(249,115,22,0.35);
+}
+.back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+.back-to-top:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 6px 28px rgba(249,115,22,0.5); }
+.back-to-top svg { transition: transform 0.3s; }
+.back-to-top:hover svg { transform: translateY(-2px); }
+.back-to-top .progress-ring {
+  position: absolute; top: -4px; left: -4px;
+  width: 60px; height: 60px;
+  transform: rotate(-90deg);
+}
+.back-to-top .progress-ring circle {
+  fill: none; stroke: rgba(255,255,255,0.3);
+  stroke-width: 2; stroke-dasharray: 164; stroke-dashoffset: 164;
+  transition: stroke-dashoffset 0.1s linear;
+}
+
+/* ===== Button Particles ===== */
+.btn-particle {
+  position: absolute;
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particleFly 0.6s ease-out forwards;
+}
+@keyframes particleFly {
+  0% { opacity: 1; transform: translate(0,0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0); }
+}
+
+/* ===== Staggered Reveal ===== */
+.product-card.fade-in-up:nth-child(1) { transition-delay: 0s; }
+.product-card.fade-in-up:nth-child(2) { transition-delay: 0.08s; }
+.product-card.fade-in-up:nth-child(3) { transition-delay: 0.16s; }
+.product-card.fade-in-up:nth-child(4) { transition-delay: 0.24s; }
+.product-card.fade-in-up:nth-child(5) { transition-delay: 0.32s; }
+.product-card.fade-in-up:nth-child(6) { transition-delay: 0.40s; }
+.product-card.fade-in-up:nth-child(7) { transition-delay: 0.48s; }
+.product-card.fade-in-up:nth-child(8) { transition-delay: 0.56s; }
+.stagger-1 { transition-delay: 0.05s; }
+.stagger-2 { transition-delay: 0.1s; }
+.stagger-3 { transition-delay: 0.15s; }
+.stagger-4 { transition-delay: 0.2s; }
+.stagger-5 { transition-delay: 0.25s; }
+.stagger-6 { transition-delay: 0.3s; }
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .hero-title { font-size: 48px; }
+  .hero-subtitle { font-size: 20px; max-width: 88%; }
+  .promise-cards { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .compliance-grid { grid-template-columns: repeat(2, 1fr); }
+  .nav-links { gap: 28px; }
+  .nav-links a { font-size: 15px; }
+  .nav-dropdown-menu { min-width: 190px; }
+  .nav-dropdown-menu a { padding: 10px 18px; font-size: 14px; }
+  .footer-top { grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
+  .footer-brand { grid-column: 1 / -1; }
+  .footer-qr { grid-column: span 1; }
+}
+@media (max-width: 768px) {
+  .container { padding: 0 24px; }
+  .nav-inner { padding: 0 24px; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .hero-title { font-size: 36px; }
+  .hero-subtitle { font-size: 16px; }
+  .promise-cards { grid-template-columns: 1fr; }
+  .product-grid { grid-template-columns: 1fr; }
+  .opc-layout { grid-template-columns: 1fr; }
+  .compliance-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-top { grid-template-columns: 1fr; }
+  .section-title { font-size: 28px; }
+  .section-padding { padding: 60px 0; }
+  .hero { min-height: auto; padding: 100px 0 60px; }
+  .arch-layer { flex-direction: column; text-align: center; gap: 10px; }
+  .arch-layer-num { margin: 0 auto; }
+  .opc-steps-flow { flex-direction: column; gap: 0; }
+  .opc-step-arrow { transform: rotate(90deg); }
+  .arch-tower { max-width: 100%; }
+  .timeline { padding-left: 36px; }
+}
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  .nav-inner { padding: 0 16px; height: 64px; }
+  .mobile-menu { top: 64px; }
+  .hero-title { font-size: 28px; }
+  .hero-subtitle { font-size: 15px; }
+  .promise-card { padding: 28px 20px; }
+  .product-card { padding: 24px 20px; }
+  .compliance-grid { grid-template-columns: 1fr; }
+  .section-padding { padding: 44px 0; }
+  .data-card { padding: 20px; }
+  .sovereignty-card { padding: 28px 20px; }
+  .btn-primary, .btn-outline-white { padding: 14px 28px; font-size: 16px; }
+  .section-title { font-size: 24px; }
+  .footer-qr-codes { flex-direction: column; align-items: center; }
+}
+/* ===== Club Join Modal ===== */
+.club-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.club-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+.club-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 25, 23, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.club-modal-content {
+  position: relative;
+  background: #fff7ed;
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(124,45,18,0.25);
+  transform: translateY(20px) scale(0.96);
+  transition: transform 0.3s ease;
+}
+.club-modal.active .club-modal-content {
+  transform: translateY(0) scale(1);
+}
+.club-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(124,45,18,0.08);
+  color: #7c2d12;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.club-modal-close:hover { background: rgba(124,45,18,0.15); }
+.club-modal-qr {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(124,45,18,0.1);
+}
+.club-modal-qr img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.club-modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #7c2d12;
+  margin-bottom: 8px;
+}
+.club-modal-desc {
+  font-size: 15px;
+  color: #78716c;
+}
+@media (max-width: 480px) {
+  .club-modal-content { padding: 24px; }
+  .club-modal-title { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Navigation ===== -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">
+      <img class="nav-logo-icon" src="LOGO.jpg" alt="智体共合" />
+      <div class="nav-logo-text">
+        <span>智体共合</span>
+        <span class="nav-logo-sub en">ZHITI FEDERATION</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#hero">首页</a>
+      <div class="nav-dropdown">
+        <a href="#products" class="nav-dropdown-toggle">产品</a>
+        <div class="nav-dropdown-menu">
+          <div class="nav-dropdown-label">Agent 产品</div>
+          <a href="openclaw.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></span>
+            OpenClaw
+          </a>
+          <a href="digital-human.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="16" cy="12" r="1" fill="currentColor"/><line x1="12" y1="7" x2="12" y2="4"/><path d="M8 4h8"/></svg></span>
+            智体数字人
+          </a>
+          <div class="nav-dropdown-divider"></div>
+          <div class="nav-dropdown-label">硬件产品</div>
+          <a href="ai-box.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+            小龙虾盒子
+          </a>
+          <a href="udisk.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></span>
+            龙虾U盘
+          </a>
+          <a href="hdd.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>
+            龙虾移动硬盘
+          </a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <a href="computing-network.html" class="nav-dropdown-toggle">基础设施</a>
+        <div class="nav-dropdown-menu">
+          <a href="computing-network.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></span>
+            龙虾算网
+          </a>
+          <a href="federation.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg></span>
+            智体联邦
+          </a>
+          <a href="lingxia-platform.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></span>
+            灵虾平台
+          </a>
+        </div>
+      </div>
+      <a href="about.html">关于我们</a>
+      <a href="business.html">商务合作</a>
+      <a href="contact.html">联系我们</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#hero">首页</a>
+  <div class="mobile-accordion">
+    <div class="mobile-accordion-toggle">产品 <span class="accordion-arrow">▼</span></div>
+    <div class="mobile-accordion-body">
+      <div class="mobile-sub-label">Agent 产品</div>
+      <a href="openclaw.html">OpenClaw</a>
+      <a href="digital-human.html">智体数字人</a>
+      <div class="mobile-sub-label">硬件产品</div>
+      <a href="ai-box.html">小龙虾盒子</a>
+      <a href="udisk.html">龙虾U盘</a>
+      <a href="hdd.html">龙虾移动硬盘</a>
+    </div>
+  </div>
+  <div class="mobile-accordion">
+    <div class="mobile-accordion-toggle">基础设施 <span class="accordion-arrow">▼</span></div>
+    <div class="mobile-accordion-body">
+      <a href="computing-network.html">龙虾算网</a>
+      <a href="federation.html">智体联邦</a>
+      <a href="lingxia-platform.html">灵虾平台</a>
+    </div>
+  </div>
+  <a href="#sovereignty">关于我们</a>
+  <a href="#milestones">商务合作</a>
+  <a href="#footer">联系我们</a>
+</div>
+
+<!-- ===== Hero (1.1) ===== -->
+<section class="hero" id="hero">
+  <canvas class="hero-particles" id="heroParticles"></canvas>
+  <canvas class="hero-globe" id="heroGlobe"></canvas>
+  <div class="hero-content">
+    <h1 class="hero-title fade-in-up"><span id="typewriter"></span><span class="typewriter-cursor"></span></h1>
+    <p class="hero-subtitle fade-in-up">智体共合 — 去中心化多智能体协作网络的构建者，为中小微企业与超级个体提供AI基础设施，让智能触手可及、数据寸步不离。</p>
+    <div class="promise-cards">
+      <div class="promise-card fade-in-up">
+        <div class="promise-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <div class="promise-title">数据不出门</div>
+        <div class="promise-desc">100%本地化存储与推理，你的数据永远留在你的设备、你的地盘，不经云端、不留痕迹。</div>
+      </div>
+      <div class="promise-card fade-in-up">
+        <div class="promise-icon">⚡</div>
+        <div class="promise-title">断网不停机</div>
+        <div class="promise-desc">混合智能架构，本地优先、云端可选，断网瞬间自动切换，业务零中断、智能不间断。</div>
+      </div>
+      <div class="promise-card fade-in-up">
+        <div class="promise-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <div class="promise-title">买断无订阅</div>
+        <div class="promise-desc">硬件一次性买断，软件开放免订阅，没有月费陷阱、没有持续扣费，拥有即终身。</div>
+      </div>
+    </div>
+    <div class="hero-cta fade-in-up">
+      <a href="#products" class="btn-primary">探索产品矩阵 →</a>
+      <a href="#" class="btn-outline-white club-join-trigger">加入 Agent 俱乐部</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Product Matrix (1.2) ===== -->
+<section class="products section-padding" id="products">
+  <div class="container">
+    <div class="section-header fade-in-up">
+      <h2 class="section-title">产品矩阵</h2>
+      <p class="section-subtitle">从入口到基础设施，一条路径通向自主智能</p>
+      <p class="section-subtitle" style="margin-top:16px;">无论你是刚起步的独立开发者，还是需要降本增效的中小企业，智体共合的产品矩阵为你铺好了一条从"上手即用"到"深度赋能"的完整路径。先体验，再深入，最终融入网络——智能，一步步归你掌控。</p>
+    </div>
+    <div class="product-grid">
+      <!-- ① OpenClaw -->
+      <div class="product-card fade-in-up">
+        <div class="product-card-top">
+          <div class="product-name">OpenClaw 引擎</div>
+          <div class="product-badge">开放使用 · 免订阅</div>
+        </div>
+        <div class="product-position">52+技能预装的AI智能体引擎，开箱即用、模型随选</div>
+        <div class="product-features">
+          <div class="product-feature"><span class="product-feature-dot"></span>52+ Skills预装</div>
+          <div class="product-feature"><span class="product-feature-dot"></span>6大模型一键接入</div>
+          <div class="product-feature"><span class="product-feature-dot"></span>7大聊天平台接入</div>
+        </div>
+        <a href="openclaw.html" class="product-link">了解 OpenClaw <span class="product-link-arrow">→</span></a>
+      </div>
+      <!-- ② 智体数字人 -->
+      <div class="product-card fade-in-up">
+        <div class="product-card-top">
+          <div class="product-name">智体数字人</div>
+          <div class="product-badge en">2026 Q3 上线</div>
+        </div>
+        <div class="product-position">3D写实数字人内容生产工具，30分钟从形象到成片</div>
+        <div class="product-features">
+          <div class="product-feature"><span class="product-feature-dot"></span>四步闭环30分钟出片</div>
+          <div class="product-feature"><span class="product-feature-dot"></span>四大内容场景</div>
+          <div class="product-feature"><span class="product-feature-dot"></span>3D写实级驱动</div>
+        </div>
+        <a href="digital-human.html" class="product-link">了解智体数字人 <span class="product-link-arrow">→</span></a>
+      </div>
+      <!-- ③ 小龙虾AI智能盒子 -->
+      <div class="product-card fade-in-up">
+        <div class="product-card-top">
+          <div class="product-name">小龙虾AI智能盒子</div>
+          <div class="product-badge en">边缘AI · 混合智能</div>
+        </div>
+        <div class="product-position">边缘AI硬件终端，混合智能架构，本地算力+云端弹性双引擎</div>
+        <table class="pricing-table">
+          <thead><tr><th>型号</th><th>定价</th><th>算力</th><th>适合谁</th></tr></thead>
+          <tbody>
+            <tr><td class="tier-name">Lite版</td><td class="price-cell">¥8,999</td><td>20-30 TOPS</td><td>小微门店<br/>尝鲜用户</td></tr>
+            <tr><td class="tier-name">Pro版</td><td class="price-cell">¥16,999</td><td>50-80 TOPS</td><td>小型工厂<br/>工业质检</td></tr>
+            <tr><td class="tier-name">Enterprise版</td><td class="price-cell">面议</td><td>定制，可到1000 TOPS</td><td>中大型企业</td></tr>
+          </tbody>
+        </table>
+        <a href="ai-box.html" class="product-link">了解小龙虾盒子 <span class="product-link-arrow">→</span></a>
+      </div>
+      <!-- ④ 龙虾U盘 -->
+      <div class="product-card fade-in-up">
+        <div class="product-card-top">
+          <div class="product-name">龙虾U盘</div>
+          <div class="product-badge en">¥999 · 买断制</div>
+        </div>
+        <div class="product-position">随身AI智能工作站，¥999，即插即用、数据零残留</div>
+        <div class="product-features">
+          <div class="product-feature"><span class="product-feature-dot"></span>双口零安装</div>
+          <div class="product-feature"><span class="product-feature-dot"></span>数据100%本地</div>
+          <div class="product-feature"><span class="product-feature-dot"></span>买断¥999</div>
+        </div>
+        <div class="product-tag en">64GB · 买断制</div>
+        <a href="udisk.html" class="product-link">了解龙虾U盘 <span class="product-link-arrow">→</span></a>
+      </div>
+      <!-- ⑤ 龙虾移动硬盘 -->
+      <div class="product-card fade-in-up">
+        <div class="product-card-top">
+          <div class="product-name">龙虾移动硬盘</div>
+          <div class="product-badge en">¥1,999(1TB) · ¥2,999(2TB)</div>
+        </div>
+        <div class="product-position">随身AI数据中心，NVMe SSD ≥1000MB/s，预装离线模型+RAG知识库</div>
+        <div class="product-features">
+          <div class="product-feature"><span class="product-feature-dot"></span>NVMe 5倍极速</div>
+          <div class="product-feature"><span class="product-feature-dot"></span>离线模型断网推理</div>
+          <div class="product-feature"><span class="product-feature-dot"></span>50GB RAG知识库</div>
+        </div>
+        <div class="product-tag">标准版 ¥1,999(1TB) · 高配版 ¥2,999(2TB)</div>
+        <a href="hdd.html" class="product-link">了解龙虾移动硬盘 <span class="product-link-arrow">→</span></a>
+      </div>
+      <!-- ⑥ 龙虾算网 -->
+      <div class="product-card fade-in-up">
+        <div class="product-card-top">
+          <div class="product-name">龙虾算网</div>
+          <div class="product-badge">早期参与者优先</div>
+        </div>
+        <div class="product-position">分布式算力网络，1000台盒子汇聚≈771张H100算力</div>
+        <div class="product-features">
+          <div class="product-feature"><span class="product-feature-dot"></span>四层架构智能调度</div>
+          <div class="product-feature"><span class="product-feature-dot"></span>双栈激励</div>
+          <div class="product-feature"><span class="product-feature-dot"></span>1万台≈771张H100</div>
+        </div>
+        <div class="product-tag">1000台盒子后正式启动</div>
+        <a href="computing-network.html" class="product-link">了解龙虾算网 <span class="product-link-arrow">→</span></a>
+      </div>
+      <!-- ⑦ 智体联邦 -->
+      <div class="product-card fade-in-up">
+        <div class="product-card-top">
+          <div class="product-name">智体联邦</div>
+          <div class="product-badge">开放网络</div>
+        </div>
+        <div class="product-position">去中心化开放网络，下一代多智能体协作全新范式，跨组织跨平台安全协同</div>
+        <div class="product-features">
+          <div class="product-feature"><span class="product-feature-dot"></span>A2A通信协议</div>
+          <div class="product-feature"><span class="product-feature-dot"></span>DePIN分布式底座</div>
+          <div class="product-feature"><span class="product-feature-dot"></span>Token经济激励</div>
+        </div>
+        <a href="federation.html" class="product-link">了解智体联邦 <span class="product-link-arrow">→</span></a>
+      </div>
+      <!-- ⑧ 灵虾平台 -->
+      <div class="product-card fade-in-up">
+        <div class="product-card-top">
+          <div class="product-name">灵虾平台</div>
+          <div class="product-badge">国产合规 · 双栈架构</div>
+        </div>
+        <div class="product-position">面向政府国企的国产智能协作基础设施，全栈国产化，双栈架构安全不妥协</div>
+        <div class="product-features">
+          <div class="product-feature"><span class="product-feature-dot"></span>W2中心化 + W3去中心化双栈</div>
+          <div class="product-feature"><span class="product-feature-dot"></span>多智能体协同调度</div>
+          <div class="product-feature"><span class="product-feature-dot"></span>国产底座 · 合规先行</div>
+        </div>
+        <a href="lingxia-platform.html" class="product-link">了解灵虾平台 <span class="product-link-arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== OPC Section (1.3) ===== -->
+<section class="opc section-padding" id="opc">
+  <div class="container">
+    <div class="section-header fade-in-up">
+      <h2 class="section-title">一个人，一支队伍</h2>
+      <p class="section-subtitle">OPC超级个体战略 — 25分钟完成单日内容生产+客户服务，效率提升30倍</p>
+    </div>
+    <div class="opc-layout">
+      <div class="opc-text fade-in-up">
+        <p>传统创业，你需要一支队伍。找文案、找设计、找运营、找客服……人力成本堆叠，协作摩擦损耗，一个人永远跑不动一个完整的业务闭环。</p>
+        <p>OPC路径，你就是那支队伍。一个智能体搞定内容生产，一个智能体接管客户服务，一个智能体驱动数据分析。你不再是管理者，而是指挥官——<span class="opc-highlight">25分钟</span>，从创意到交付，一个人完成过去一个团队一整天的工作。效率不是线性提升，是指数级跃迁：<span class="opc-highlight">30倍</span>。</p>
+      </div>
+      <div class="data-cards fade-in-up">
+        <div class="data-card">
+          <div class="data-card-label">单日内容生产</div>
+          <div class="data-card-values">
+            <span class="data-card-old en">8小时</span>
+            <span class="data-card-arrow">→</span>
+            <span class="data-card-new en counter" data-target="25">0</span>
+            <span class="data-card-new">分钟</span>
+            <span class="data-card-multiplier en">≈19倍</span>
+          </div>
+        </div>
+        <div class="data-card">
+          <div class="data-card-label">客户服务响应</div>
+          <div class="data-card-values">
+            <span class="data-card-old">人工轮班</span>
+            <span class="data-card-arrow">→</span>
+            <span class="data-card-new en">7×24</span>
+            <span class="data-card-new">即时</span>
+            <span class="data-card-multiplier en">≈30倍</span>
+          </div>
+        </div>
+        <div class="data-card">
+          <div class="data-card-label">人力成本</div>
+          <div class="data-card-values">
+            <span class="data-card-old">月薪+社保</span>
+            <span class="data-card-arrow">→</span>
+            <span class="data-card-new">硬件买断</span>
+            <span class="data-card-multiplier en">降本>90%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="opc-steps fade-in-up">
+      <div class="opc-steps-title">OPC 5步流程</div>
+      <div class="opc-steps-flow">
+        <div class="opc-step">
+          <div class="opc-step-num en">S1</div>
+          <div class="opc-step-label">启动</div>
+          <div class="opc-step-desc">龙虾U盘/硬盘开机</div>
+        </div>
+        <div class="opc-step-arrow">→</div>
+        <div class="opc-step">
+          <div class="opc-step-num en">S2</div>
+          <div class="opc-step-label">配置</div>
+          <div class="opc-step-desc">OpenClaw加载</div>
+        </div>
+        <div class="opc-step-arrow">→</div>
+        <div class="opc-step">
+          <div class="opc-step-num en">S3</div>
+          <div class="opc-step-label">生产</div>
+          <div class="opc-step-desc">数字人出片</div>
+        </div>
+        <div class="opc-step-arrow">→</div>
+        <div class="opc-step">
+          <div class="opc-step-num en">S4</div>
+          <div class="opc-step-label">服务</div>
+          <div class="opc-step-desc">智能体接管</div>
+        </div>
+        <div class="opc-step-arrow">→</div>
+        <div class="opc-step">
+          <div class="opc-step-num en">S5</div>
+          <div class="opc-step-label">进化</div>
+          <div class="opc-step-desc">AI盒子→算网→联邦</div>
+        </div>
+      </div>
+    </div>
+    <div class="opc-cta fade-in-up">
+      <div class="opc-cta-text"><strong>开始你的OPC之旅</strong> — 从龙虾U盘起步，¥999买断一个超级个体的全部AI基础设施。</div>
+      <a href="udisk.html" class="btn-primary">立即购买龙虾U盘 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Data Sovereignty (1.4) ===== -->
+<section class="sovereignty section-padding" id="sovereignty">
+  <div class="container">
+    <div class="section-header fade-in-up">
+      <h2 class="section-title">数据主权宣言</h2>
+      <p class="section-subtitle">你的AI，由你掌控，不是一句口号，是三重承诺。</p>
+    </div>
+    <div class="sovereignty-cards">
+      <div class="sovereignty-card fade-in-up">
+        <div class="sovereignty-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <div class="sovereignty-card-title">数据主权 — 你的数据，留在你的地盘</div>
+        <div class="sovereignty-card-body">云端AI意味着你的数据上传、存储、分析都在别人的服务器上。你无法审计流转路径，无法确认是否被训练复用，更无法保证泄露时的响应速度。智体共合的AI硬件将推理与存储100%留在本地——U盘拔走零残留、硬盘断网照样跑、盒子本地优先云端可选。数据不出门，是物理级的保障，不是协议级的承诺。</div>
+      </div>
+      <div class="sovereignty-card fade-in-up">
+        <div class="sovereignty-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <div class="sovereignty-card-title">成本自主 — 一次性买断，没有月费陷阱</div>
+        <div class="sovereignty-card-body">订阅制AI工具的年费累计往往远超硬件成本，而且你永远在"租用"而非"拥有"——停付即停用，数据即丢失。智体共合的硬件产品全部买断制：U盘¥999、硬盘¥1,999起、盒子¥8,999起。一次支付，终身使用，没有续费焦虑，没有数据赎回风险。你花的每一分钱，都在积累属于你的资产。</div>
+      </div>
+      <div class="sovereignty-card fade-in-up">
+        <div class="sovereignty-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+        <div class="sovereignty-card-title">智能体自主 — 你指挥，它执行，协议公开透明</div>
+        <div class="sovereignty-card-body">传统AI助手是封闭生态的附庸——模型、技能、调度逻辑全由平台决定，你只能用，不能改。智体共合的智能体架构基于A2A开放协议，引擎可定制、技能可编排、模型可切换、行为可审计。你的智能体听从你的指令，运行在你的设备，服务于你的业务——自主，不是被订阅绑定。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Architecture (1.5) ===== -->
+<section class="architecture section-padding" id="architecture">
+  <div class="container">
+    <div class="section-header fade-in-up">
+      <h2 class="section-title">六层技术架构</h2>
+      <p class="section-subtitle">从治理到信任，每一层都为你而建</p>
+      <p class="section-subtitle" style="margin-top:16px;">去中心化多智能体协作网络不是一句愿景，它有清晰的架构支撑。六层体系自底向上，从身份信任到治理合规，确保网络中的每一次交互、每一份算力、每一笔结算，都可追溯、可验证、可信赖。</p>
+    </div>
+    <div class="arch-tower fade-in-up">
+      <div class="arch-layer arch-layer-06">
+        <div class="arch-layer-num en">06</div>
+        <div>
+          <div class="arch-layer-title">身份信任层</div>
+          <div class="arch-layer-desc">DID身份 + Karma信誉，让每个节点有面孔、让每次协作有信用。</div>
+        </div>
+      </div>
+      <div class="arch-layer arch-layer-05">
+        <div class="arch-layer-num en">05</div>
+        <div>
+          <div class="arch-layer-title">价值结算层</div>
+          <div class="arch-layer-desc">Token经济驱动贡献激励与服务结算，让付出有回报、让价值可计量。</div>
+        </div>
+      </div>
+      <div class="arch-layer arch-layer-04">
+        <div class="arch-layer-num en">04</div>
+        <div>
+          <div class="arch-layer-title">资源执行层</div>
+          <div class="arch-layer-desc">DePIN底座汇聚分布式算力与存储，让每一台盒子成为网络的肌肉。</div>
+        </div>
+      </div>
+      <div class="arch-layer arch-layer-03">
+        <div class="arch-layer-num en">03</div>
+        <div>
+          <div class="arch-layer-title">调度编排层</div>
+          <div class="arch-layer-desc">任务拆解、资源匹配、执行编排，让一千个智能体像一支队伍。</div>
+        </div>
+      </div>
+      <div class="arch-layer arch-layer-02">
+        <div class="arch-layer-num en">02</div>
+        <div>
+          <div class="arch-layer-title">通信协议层</div>
+          <div class="arch-layer-desc">A2A协议定义智能体间的对话标准，让协作不靠猜测、靠协议。</div>
+        </div>
+      </div>
+      <div class="arch-layer arch-layer-01">
+        <div class="arch-layer-num en">01</div>
+        <div>
+          <div class="arch-layer-title">治理合规层</div>
+          <div class="arch-layer-desc">DAO共识治理 + 法规遵从，让去中心化不脱轨、让创新有边界。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Compliance (1.6) ===== -->
+<section class="compliance section-padding" id="compliance">
+  <div class="container">
+    <div class="section-header fade-in-up">
+      <h2 class="section-title">合规与安全</h2>
+      <p class="section-subtitle">创新的底线，信任的基石</p>
+    </div>
+    <div class="compliance-grid">
+      <div class="compliance-card fade-in-up">
+        <div class="compliance-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></div>
+        <div class="compliance-title">算法备案100%</div>
+        <div class="compliance-desc">所有AI算法模型依法备案，可审计、可追溯，合规不是补丁，是出厂标配。</div>
+      </div>
+      <div class="compliance-card fade-in-up">
+        <div class="compliance-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="compliance-title">数据本地化加密</div>
+        <div class="compliance-desc">端侧加密存储与推理，数据不经云端裸传输，物理级安全保障。</div>
+      </div>
+      <div class="compliance-card fade-in-up">
+        <div class="compliance-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></div>
+        <div class="compliance-title">信创全栈适配</div>
+        <div class="compliance-desc">国产芯片、国产操作系统、国产模型全栈兼容，自主可控不留短板。</div>
+      </div>
+      <div class="compliance-card fade-in-up">
+        <div class="compliance-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="compliance-title">AI内容双重标识</div>
+        <div class="compliance-desc">生成内容自动嵌入显性水印+隐性溯源标识，双重保障内容可辨识、可追溯。</div>
+      </div>
+      <div class="compliance-card fade-in-up">
+        <div class="compliance-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+        <div class="compliance-title">积分法币结算</div>
+        <div class="compliance-desc">算力积分非投资性代币，服务结算走法币通道，合规激励、清晰财务。</div>
+      </div>
+      <div class="compliance-card fade-in-up">
+        <div class="compliance-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 22c4 0 8-3.58 8-8s-3.58-8-8-8c-2.27 0-4.54.94-6.16 2.56C3.27 10.13 1 13.27 1 17.59c0 .78.63 1.41 1.41 1.41H11z"/></svg></div>
+        <div class="compliance-title">绿色算力</div>
+        <div class="compliance-desc">分布式边缘计算减少集中式数据中心能耗，算力即绿色，效率不牺牲环境。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Milestones (1.7) ===== -->
+<section class="milestones section-padding" id="milestones">
+  <div class="container">
+    <div class="section-header fade-in-up">
+      <h2 class="section-title">里程碑</h2>
+      <p class="section-subtitle">从愿景到落地，每一步都有印记</p>
+    </div>
+    <div class="timeline fade-in-up">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date en">2026 Q1</div>
+        <div class="timeline-content"><span class="timeline-emoji"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>公司成立 — 智体共合科技（无锡）有限公司正式成立，去中心化多智能体协作网络启航。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date en">2026 Q2</div>
+        <div class="timeline-content"><span class="timeline-emoji"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span>产品定稿 — 小龙虾AI智能盒子样机完成，算网架构定稿，灵虾平台设计启动。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date en">2026 Q3 上半月</div>
+        <div class="timeline-content"><span class="timeline-emoji"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>龙虾U盘发布 — ¥999随身AI工作站上线，买断制、双口即插即用、数据100%本地化。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date en">2026 Q3 下半月</div>
+        <div class="timeline-content"><span class="timeline-emoji"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>龙虾移动硬盘发布 — ¥1,999起随身AI数据中心上线，预装离线模型+RAG知识库，断网深度推理。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date en">2026 Q3</div>
+        <div class="timeline-content"><span class="timeline-emoji"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></span>OpenClaw 52+ Skills + 数字人上线 — OpenClaw引擎52+技能包就绪，智体数字人30分钟出片能力正式开放。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date en">2026 Q3</div>
+        <div class="timeline-content"><span class="timeline-emoji"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>OPC战略确认 + Agent俱乐部 — OPC超级个体战略正式确立，Agent俱乐部¥999/年开放注册，硬件用户¥1限时首年。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Back to Top ===== -->
+<div class="back-to-top" id="backToTop" aria-label="返回顶部">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+  <svg class="progress-ring" width="60" height="60"><circle cx="30" cy="30" r="26" id="progressCircle"/></svg>
+</div>
+
+<!-- ===== Footer ===== -->
+<footer class="footer" id="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-name">智体共合科技（无锡）有限公司 · <span class="en">594agent.com</span></div>
+        <div class="footer-brand-desc">
+          赛道：AI + Web3 + DePIN<br>
+          去中心化多智能体协作网络的构建者 · 中小微企业与超级个体的AI基础设施提供商
+        </div>
+        <div class="footer-promises" style="margin-top:16px;">
+          <strong style="color:rgba(255,255,255,0.85);">三大核心承诺：</strong>数据不出门 · 断网不停机 · 买断无订阅
+        </div>
+        <div class="footer-compliance">
+          <strong style="color:rgba(255,255,255,0.7);">合规底线：</strong>算法备案100% · 数据本地化加密 · 信创全栈适配 · AI内容双重标识 · 积分法币结算 · 绿色算力
+        </div>
+      </div>
+      <div>
+        <div class="footer-nav-heading">产品</div>
+        <div class="footer-nav-links">
+          <div class="footer-nav-sub">Agent 产品</div>
+          <a href="openclaw.html">OpenClaw</a>
+          <a href="digital-human.html">智体数字人</a>
+          <div class="footer-nav-sub">硬件产品</div>
+          <a href="ai-box.html">小龙虾盒子</a>
+          <a href="udisk.html">龙虾U盘</a>
+          <a href="hdd.html">龙虾移动硬盘</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-nav-heading">基础设施</div>
+        <div class="footer-nav-links">
+          <a href="computing-network.html">龙虾算网</a>
+          <a href="federation.html">智体联邦</a>
+          <a href="lingxia-platform.html">灵虾平台</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-nav-heading">关于</div>
+        <div class="footer-nav-links">
+          <a href="#sovereignty">关于我们</a>
+          <a href="#milestones">商务合作</a>
+          <a href="#footer">联系我们</a>
+        </div>
+      </div>
+      <div class="footer-qr">
+        <div class="footer-qr-heading">扫码关注/加入</div>
+        <div class="footer-qr-codes">
+          <div class="footer-qr-item">
+            <img src="gongzhonghao.jpg" alt="公众号二维码" />
+            <div class="footer-qr-item-label">公众号</div>
+          </div>
+          <div class="footer-qr-item">
+            <img src="ZhiTiAgentclub.png" alt="智体Agent俱乐部" />
+            <div class="footer-qr-item-label">扫码加入俱乐部</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="footer-copy en">© 2026 智体共合科技（无锡）有限公司 版权所有</div>
+  </div>
+</footer>
+
+<script>
+// ===== 1. Scroll Progress Bar =====
+const progressBar = document.createElement('div');
+progressBar.className = 'scroll-progress';
+document.body.prepend(progressBar);
+window.addEventListener('scroll', () => {
+  const scrollTop = document.documentElement.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  progressBar.style.width = scrollHeight > 0 ? (scrollTop / scrollHeight * 100) + '%' : '0%';
+});
+
+// ===== 2. Navbar scroll effect =====
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) navbar.classList.add('scrolled');
+  else navbar.classList.remove('scrolled');
+});
+
+// ===== 3. Hamburger menu =====
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    mobileMenu.classList.remove('open');
+  });
+});
+// 移动端手风琴展开
+mobileMenu.querySelectorAll('.mobile-accordion-toggle').forEach(toggle => {
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggle.classList.toggle('open');
+    toggle.nextElementSibling.classList.toggle('open');
+  });
+});
+
+// ===== 4. Fade-in-up with IntersectionObserver =====
+const fadeElements = document.querySelectorAll('.fade-in-up');
+const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      fadeObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+fadeElements.forEach(el => fadeObserver.observe(el));
+
+// ===== 5. Counter animation =====
+const counters = document.querySelectorAll('.counter');
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.getAttribute('data-target'), 10);
+      const duration = 1500, startTime = performance.now();
+      const animate = (now) => {
+        const elapsed = now - startTime, progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target);
+        if (progress < 1) requestAnimationFrame(animate);
+        else { el.textContent = target; counterObserver.unobserve(el); }
+      };
+      requestAnimationFrame(animate);
+    }
+  });
+}, { threshold: 0.5 });
+counters.forEach(el => counterObserver.observe(el));
+
+// ===== 6. Typewriter =====
+(function typewriter() {
+  const el = document.getElementById('typewriter');
+  if (!el) return;
+  const text = '你的AI，由你掌控';
+  let i = 0;
+  function type() {
+    if (i < text.length) { el.textContent += text[i]; i++; setTimeout(type, 100 + Math.random() * 50); }
+  }
+  setTimeout(type, 400);
+})();
+
+// ===== 7. Hero Particles =====
+(function heroParticles() {
+  const canvas = document.getElementById('heroParticles');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const hero = document.querySelector('.hero');
+  let particles = [];
+  function resize() { canvas.width = hero.offsetWidth; canvas.height = hero.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function createParticle() {
+    return { x: Math.random() * canvas.width, y: canvas.height + 10, radius: Math.random() * 3 + 1, speed: Math.random() * 1.5 + 0.5, opacity: Math.random() * 0.6 + 0.1, vx: (Math.random() - 0.5) * 0.5 };
+  }
+
+  for (let i = 0; i < 50; i++) { particles.push(createParticle()); particles[i].y = Math.random() * canvas.height; }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p, idx) => {
+      p.y -= p.speed;
+      p.x += p.vx;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${p.opacity})`;
+      ctx.fill();
+      if (p.y < -10 || p.x < -10 || p.x > canvas.width + 10) { particles[idx] = createParticle(); }
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// ===== 8. 3D Globe =====
+(function drawGlobe() {
+  const canvas = document.getElementById('heroGlobe');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let angle = 0;
+  const points = [];
+  const cx = canvas.width / 2, cy = canvas.height / 2, r = 200;
+  // Generate sphere points
+  for (let i = 0; i < 300; i++) {
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    points.push({ theta, phi });
+  }
+
+  function project(theta, phi, angle) {
+    const x = r * Math.sin(phi) * Math.cos(theta + angle);
+    const y = r * Math.sin(phi) * Math.sin(theta + angle);
+    const z = r * Math.cos(phi);
+    return { x: cx + x, y: cy + y, z, scale: (z + r) / (2 * r) };
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Draw meridians
+    ctx.strokeStyle = 'rgba(255,255,255,1)';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < 6; i++) {
+      ctx.beginPath();
+      const lon = (i / 6) * Math.PI * 2;
+      for (let j = 0; j <= 60; j++) {
+        const phi = (j / 60) * Math.PI;
+        const p = project(lon, phi, angle);
+        j === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+      }
+      ctx.stroke();
+    }
+    // Latitudes
+    for (let i = 1; i < 4; i++) {
+      ctx.beginPath();
+      const phi = (i / 4) * Math.PI;
+      for (let j = 0; j <= 80; j++) {
+        const theta = (j / 80) * Math.PI * 2;
+        const p = project(theta, phi, angle);
+        j === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+      }
+      ctx.stroke();
+    }
+    angle += 0.003;
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// ===== 9. Card 3D Tilt =====
+document.querySelectorAll('.product-card').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cx = rect.width / 2, cy = rect.height / 2;
+    const rx = ((y - cy) / cy * -8).toFixed(2);
+    const ry = ((x - cx) / cx * 8).toFixed(2);
+    card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-8px)`;
+    card.style.boxShadow = '0 20px 50px rgba(124,45,18,0.18)';
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.boxShadow = '';
+  });
+});
+
+// ===== 10. Parallax Scrolling =====
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  const heroContent = document.querySelector('.hero-content');
+  if (heroContent) heroContent.style.transform = `translateY(${scrollY * 0.15}px)`;
+  const heroBg = document.querySelector('.hero');
+  if (heroBg) heroBg.style.backgroundPosition = `0 ${scrollY * 0.3}px`;
+});
+
+// ===== 11. Back to Top Button =====
+const backToTop = document.getElementById('backToTop');
+const progressCircle = document.getElementById('progressCircle');
+const totalDash = 2 * Math.PI * 26;
+window.addEventListener('scroll', () => {
+  const scrollTop = document.documentElement.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  if (scrollTop > 500) backToTop.classList.add('visible');
+  else backToTop.classList.remove('visible');
+  if (progressCircle && scrollHeight > 0) {
+    progressCircle.style.strokeDashoffset = totalDash - (scrollTop / scrollHeight * totalDash);
+  }
+});
+backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+// ===== 12. Custom Cursor =====
+(function customCursor() {
+  if (window.innerWidth <= 768) return;
+  const cursor = document.createElement('div');
+  cursor.className = 'custom-cursor';
+  document.body.appendChild(cursor);
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  const hoverTargets = document.querySelectorAll('a, button, .product-card, .promise-card, .btn-primary, .btn-outline-white, .sovereignty-card, .compliance-card, .back-to-top');
+  hoverTargets.forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  });
+})();
+
+// ===== 13. Button Particles =====
+document.querySelectorAll('.btn-primary').forEach(btn => {
+  btn.addEventListener('mouseenter', function(e) {
+    const rect = btn.getBoundingClientRect();
+    for (let i = 0; i < 8; i++) {
+      const particle = document.createElement('span');
+      particle.className = 'btn-particle';
+      const angle = (Math.PI * 2 * i) / 8;
+      const dist = 30 + Math.random() * 20;
+      particle.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+      particle.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+      particle.style.left = (e.clientX - rect.left) + 'px';
+      particle.style.top = (e.clientY - rect.top) + 'px';
+      btn.appendChild(particle);
+      particle.addEventListener('animationend', () => particle.remove());
+    }
+  });
+});
+
+// ===== 14. Smooth scroll for anchor links =====
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    if (this.classList.contains('club-join-trigger')) return;
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      const offset = navbar.offsetHeight;
+      const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+<!-- ===== Club Join Modal ===== -->
+<div class="club-modal" id="clubModal" aria-hidden="true">
+  <div class="club-modal-overlay" data-close-modal></div>
+  <div class="club-modal-content">
+    <button class="club-modal-close" data-close-modal aria-label="关闭">&times;</button>
+    <div class="club-modal-qr">
+      <img src="ZhiTiAgentclub.png" alt="智体Agent俱乐部二维码">
+    </div>
+    <div class="club-modal-title">加入 Agent 俱乐部</div>
+    <div class="club-modal-desc">微信扫码，立即加入智体 Agent 俱乐部</div>
+  </div>
+</div>
+<script>
+// ===== Club Join Modal =====
+const clubModal = document.getElementById('clubModal');
+if (clubModal) {
+  const openClubModal = () => {
+    clubModal.classList.add('active');
+    clubModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+  const closeClubModal = () => {
+    clubModal.classList.remove('active');
+    clubModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+  document.querySelectorAll('.club-join-trigger').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openClubModal();
+    });
+  });
+  clubModal.querySelectorAll('[data-close-modal]').forEach(el => {
+    el.addEventListener('click', closeClubModal);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && clubModal.classList.contains('active')) closeClubModal();
+  });
+}
+</script>
+</body>
+</html>

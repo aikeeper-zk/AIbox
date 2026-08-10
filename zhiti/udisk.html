@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" href="LOGO_64x64.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>龙虾 U盘 — 随身AI智能工作站，¥999，插上即用、拔走即走</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== Reset & Base ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", sans-serif;
+  color: #1c1917;
+  background: #fff7ed;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.num, .en { font-family: 'Inter', -apple-system, sans-serif; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
+
+/* ===== Colors ===== */
+:root {
+  --primary-dark: #7c2d12;
+  --primary: #c2410c;
+  --accent: #f97316;
+  --warm-bg: #fff7ed;
+  --warm-bg-alt: #ffedd5;
+  --text-dark: #1c1917;
+  --text-muted: #78716c;
+  --white: #ffffff;
+  --radius: 16px;
+  --shadow: 0 2px 12px rgba(124,45,18,0.08);
+  --shadow-hover: 0 8px 30px rgba(124,45,18,0.15);
+  --max-width: 1400px;
+}
+
+/* ===== Utilities ===== */
+.container { max-width: var(--max-width); margin: 0 auto; padding: 0 40px; }
+.section-padding { padding: 100px 0; }
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-in-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Navigation ===== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(255, 247, 237, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(124, 45, 18, 0.08);
+  transition: background 0.3s;
+}
+.navbar.scrolled {
+  background: rgba(255, 247, 237, 0.95);
+  box-shadow: 0 2px 20px rgba(124,45,18,0.1);
+}
+.nav-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--primary-dark);
+}
+.nav-logo-icon {
+  height: 44px;
+  width: auto;
+  border-radius: 8px;
+}
+.nav-logo-text { display: flex; flex-direction: column; line-height: 1.2; }
+.nav-logo-sub { font-size: 13px; color: var(--text-muted); letter-spacing: 1px; font-weight: 500; }
+.nav-links {
+  display: flex;
+  gap: 48px;
+  align-items: center;
+}
+.nav-links a {
+  font-size: 17px;
+  color: var(--text-dark);
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--primary); }
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.3s;
+}
+.nav-links a:hover::after { width: 100%; }
+
+/* 产品下拉菜单 */
+.nav-dropdown { position: relative; }
+.nav-dropdown-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  user-select: none;
+}
+.nav-links .nav-dropdown-toggle::after {
+  content: '▾';
+  position: static;
+  display: inline;
+  width: auto;
+  height: auto;
+  background: none;
+  bottom: auto;
+  left: auto;
+  font-size: 12px;
+  margin-left: 2px;
+  opacity: 0.6;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.nav-links .nav-dropdown-toggle:hover::after {
+  transform: rotate(180deg);
+  opacity: 1;
+  width: auto;
+}
+.nav-dropdown:hover .nav-dropdown-toggle { color: var(--primary); }
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.06);
+  padding: 10px 0;
+  min-width: 220px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+}
+.nav-dropdown:hover .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+.nav-dropdown-menu a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 22px;
+  font-size: 15px;
+  color: var(--text-dark);
+  font-weight: 400;
+  white-space: nowrap;
+  transition: all 0.2s;
+  position: static;
+  text-decoration: none;
+}
+.nav-dropdown-menu a::after { display: none !important; }
+.nav-dropdown-menu a:hover {
+  background: linear-gradient(135deg, rgba(27,88,68,0.06), rgba(27,88,68,0.02));
+  color: var(--primary);
+  padding-left: 26px;
+}
+.nav-dropdown-menu .dropdown-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.nav-dropdown-divider {
+  height: 1px;
+  background: var(--border-light);
+  margin: 6px 18px;
+}
+.nav-dropdown-label {
+  padding: 8px 22px 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+.hamburger {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+}
+.hamburger span {
+  width: 24px;
+  height: 2px;
+  background: var(--primary-dark);
+  transition: all 0.3s;
+  border-radius: 2px;
+}
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  background: rgba(255,247,237,0.98);
+  backdrop-filter: blur(20px);
+  padding: 24px;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 4px 20px rgba(124,45,18,0.1);
+  z-index: 999;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-size: 16px;
+  color: var(--text-dark);
+  font-weight: 500;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(124,45,18,0.06);
+}
+.mobile-menu a:hover { color: var(--primary); }
+/* 移动端手风琴展开 */
+.mobile-accordion-toggle {
+  font-size: 18px;
+  color: var(--text-dark);
+  font-weight: 500;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(124,45,18,0.06);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+}
+.mobile-accordion-toggle .accordion-arrow {
+  font-size: 12px;
+  transition: transform 0.3s;
+  color: #999;
+}
+.mobile-accordion-toggle.open .accordion-arrow {
+  transform: rotate(180deg);
+}
+.mobile-accordion-body {
+  display: none;
+  flex-direction: column;
+  padding-left: 16px;
+  margin-bottom: 4px;
+}
+.mobile-accordion-body.open {
+  display: flex;
+}
+.mobile-sub-label {
+  font-size: 11px;
+  color: #999;
+  letter-spacing: 1.5px;
+  padding: 10px 0 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.mobile-accordion-body a {
+  font-size: 16px;
+  padding: 8px 0;
+  border-bottom: none;
+  color: #555;
+}
+
+/* ===== Sub Hero ===== */
+.sub-hero {
+  background: linear-gradient(135deg, #7c2d12 0%, #c2410c 60%, #f97316 100%);
+  padding: 120px 0 60px;
+  position: relative;
+  overflow: hidden;
+}
+.sub-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(249,115,22,0.2) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.sub-hero-content {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+.sub-hero-title {
+  font-size: 40px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+}
+.sub-hero-subtitle {
+  font-size: 16px;
+  color: rgba(255,255,255,0.9);
+  max-width: 720px;
+  margin: 0 auto 36px;
+  line-height: 1.8;
+}
+.sub-hero-price {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--accent);
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 8px;
+}
+.sub-hero-price-note {
+  font-size: 15px;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 36px;
+}
+.sub-hero-cta {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 16px rgba(249,115,22,0.3);
+}
+.btn-primary:hover {
+  background: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(194,65,12,0.4);
+}
+.btn-outline-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: transparent;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: 2px solid rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-outline-white:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ===== Section Headers ===== */
+.section-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.section-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+.section-subtitle {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 760px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+/* ===== Core Features ===== */
+.features {
+  background: var(--warm-bg);
+}
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.feature-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+.feature-icon { font-size: 32px; margin-bottom: 12px; }
+.feature-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 8px;
+}
+.feature-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.feature-highlight {
+  color: var(--accent);
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ===== Scenarios ===== */
+.scenarios {
+  background: var(--warm-bg-alt);
+}
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.scenario-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.scenario-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+.scenario-icon { font-size: 28px; margin-bottom: 12px; }
+.scenario-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 8px;
+}
+.scenario-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* ===== Comparison Guide ===== */
+.compare-guide {
+  background: var(--warm-bg);
+}
+.compare-box {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 40px;
+  box-shadow: var(--shadow);
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+.compare-question {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 16px;
+}
+.compare-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.compare-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary);
+  transition: color 0.3s;
+}
+.compare-link:hover { color: var(--accent); }
+.compare-link-arrow { font-size: 18px; transition: transform 0.3s; }
+.compare-link:hover .compare-link-arrow { transform: translateX(4px); }
+
+/* ===== CTA Section ===== */
+.cta-section {
+  background: linear-gradient(135deg, #7c2d12 0%, #c2410c 60%, #f97316 100%);
+  padding: 64px 0;
+  text-align: center;
+}
+.cta-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+.cta-desc {
+  font-size: 15px;
+  color: rgba(255,255,255,0.9);
+  max-width: 600px;
+  margin: 0 auto 32px;
+  line-height: 1.8;
+}
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* ===== Footer ===== */
+.footer {
+  background: var(--primary-dark);
+  color: rgba(255,255,255,0.9);
+  padding: 48px 0 32px;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 0.9fr 0.6fr 0.6fr auto;
+  gap: 36px;
+  margin-bottom: 32px;
+}
+.footer-brand { max-width: 500px; }
+.footer-brand-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.footer-brand-desc {
+  font-size: 13px;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.7);
+}
+.footer-nav-heading {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.footer-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer-nav-links a {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  transition: color 0.3s;
+}
+.footer-nav-links a:hover { color: var(--accent); }
+.footer-nav-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 1.2px;
+  padding: 10px 0 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.footer-nav-sub:first-child { padding-top: 0; }
+.footer-promises {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 12px;
+  line-height: 1.8;
+}
+.footer-compliance {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+}
+.footer-qr {
+  text-align: center;
+}
+.footer-qr-heading {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.footer-qr-codes {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.footer-qr-item img {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  background: #fff;
+  padding: 3px;
+  display: block;
+}
+.footer-qr-item-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.7);
+  margin-top: 6px;
+}
+.footer-divider {
+  border: none;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  margin-bottom: 24px;
+}
+.footer-copy {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .sub-hero-title { font-size: 28px; }
+  .sub-hero-subtitle { font-size: 14px; }
+  .sub-hero-price { font-size: 36px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .scenario-grid { grid-template-columns: 1fr; }
+  .section-title { font-size: 24px; }
+  .section-padding { padding: 48px 0; }
+  .footer-top { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .sub-hero-title { font-size: 24px; }
+  .sub-hero { padding: 100px 0 48px; }
+  .feature-card { padding: 24px 18px; }
+  .scenario-card { padding: 20px 18px; }
+  .container { padding: 0 16px; }
+  .btn-primary, .btn-outline-white { padding: 12px 24px; font-size: 14px; }
+  .compare-box { padding: 24px 18px; }
+}
+/* ===== Club Join Modal ===== */
+.club-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.club-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+.club-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 25, 23, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.club-modal-content {
+  position: relative;
+  background: #fff7ed;
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(124,45,18,0.25);
+  transform: translateY(20px) scale(0.96);
+  transition: transform 0.3s ease;
+}
+.club-modal.active .club-modal-content {
+  transform: translateY(0) scale(1);
+}
+.club-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(124,45,18,0.08);
+  color: #7c2d12;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.club-modal-close:hover { background: rgba(124,45,18,0.15); }
+.club-modal-qr {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(124,45,18,0.1);
+}
+.club-modal-qr img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.club-modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #7c2d12;
+  margin-bottom: 8px;
+}
+.club-modal-desc {
+  font-size: 15px;
+  color: #78716c;
+}
+@media (max-width: 480px) {
+  .club-modal-content { padding: 24px; }
+  .club-modal-title { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Navigation ===== -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img class="nav-logo-icon" src="LOGO.jpg" alt="智体共合" />
+      <div class="nav-logo-text">
+        <span>智体共合</span>
+        <span class="nav-logo-sub en">ZHITI FEDERATION</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <div class="nav-dropdown">
+        <a href="index.html#products" class="nav-dropdown-toggle">产品</a>
+        <div class="nav-dropdown-menu">
+          <div class="nav-dropdown-label">Agent 产品</div>
+          <a href="openclaw.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></span>
+            OpenClaw
+          </a>
+          <a href="digital-human.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="16" cy="12" r="1" fill="currentColor"/><line x1="12" y1="7" x2="12" y2="4"/><path d="M8 4h8"/></svg></span>
+            智体数字人
+          </a>
+          <div class="nav-dropdown-divider"></div>
+          <div class="nav-dropdown-label">硬件产品</div>
+          <a href="ai-box.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+            小龙虾盒子
+          </a>
+          <a href="udisk.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></span>
+            龙虾U盘
+          </a>
+          <a href="hdd.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>
+            龙虾移动硬盘
+          </a>
+
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <a href="computing-network.html" class="nav-dropdown-toggle">基础设施</a>
+        <div class="nav-dropdown-menu">
+          <a href="computing-network.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></span>
+            龙虾算网
+          </a>
+          <a href="federation.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg></span>
+            智体联邦
+          </a>
+          <a href="lingxia-platform.html">
+            <span class="dropdown-icon" style="background:rgba(27,88,68,0.08);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></span>
+            灵虾平台
+          </a>
+        </div>
+      </div>
+      <a href="about.html">关于我们</a>
+      <a href="business.html">商务合作</a>
+      <a href="contact.html">联系我们</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">首页</a>
+  <div class="mobile-accordion">
+    <div class="mobile-accordion-toggle">产品 <span class="accordion-arrow">▼</span></div>
+    <div class="mobile-accordion-body">
+      <div class="mobile-sub-label">Agent 产品</div>
+      <a href="openclaw.html">OpenClaw</a>
+      <a href="digital-human.html">智体数字人</a>
+      <div class="mobile-sub-label">硬件产品</div>
+      <a href="ai-box.html">小龙虾盒子</a>
+      <a href="udisk.html">龙虾U盘</a>
+      <a href="hdd.html">龙虾移动硬盘</a>
+    </div>
+  </div>
+  <div class="mobile-accordion">
+    <div class="mobile-accordion-toggle">基础设施 <span class="accordion-arrow">▼</span></div>
+    <div class="mobile-accordion-body">
+      <a href="computing-network.html">龙虾算网</a>
+      <a href="federation.html">智体联邦</a>
+      <a href="lingxia-platform.html">灵虾平台</a>
+    </div>
+  </div>
+  <a href="about.html">关于我们</a>
+  <a href="business.html">商务合作</a>
+  <a href="contact.html">联系我们</a>
+</div>
+
+<!-- ===== Sub Hero ===== -->
+<section class="sub-hero">
+  <div class="sub-hero-content">
+    <h1 class="sub-hero-title fade-in-up">龙虾 U盘</h1>
+    <p class="sub-hero-subtitle fade-in-up">随身AI智能工作站，插上即用、拔走即走<br>64GB随身AI环境，任何电脑秒变工作站，数据100%本地、主机零残留、买断无订阅。</p>
+    <div class="sub-hero-price fade-in-up">¥999</div>
+    <div class="sub-hero-price-note fade-in-up">买断制 · 无订阅 · 无隐藏费用</div>
+    <div class="sub-hero-cta fade-in-up">
+      <a href="#cta" class="btn-primary">立即购买 ¥999 →</a>
+      <a href="#" class="btn-outline-white club-join-trigger">加入 Agent 俱乐部</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Core Features ===== -->
+<section class="features section-padding" id="features">
+  <div class="container">
+    <div class="section-header fade-in-up">
+      <h2 class="section-title">4条核心特性</h2>
+      <p class="section-subtitle">每一个特性，都在回答一个真实痛点</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card fade-in-up">
+        <div class="feature-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="feature-title">即插即用 · 零安装零配置</div>
+        <div class="feature-desc">双口设计（USB-A + USB-C），插入任何电脑即刻启动完整AI环境。无需安装驱动、无需配置环境、无需下载模型——<span class="feature-highlight">3秒</span>从插入到可用，你的AI工作站随身就走。</div>
+      </div>
+      <div class="feature-card fade-in-up">
+        <div class="feature-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <div class="feature-title">数据100%本地 · 主机零残留</div>
+        <div class="feature-desc">所有推理、存储、交互100%在U盘内完成，主机上不留任何数据痕迹。拔走U盘 = 拔走一切——你的工作记录、对话历史、模型缓存，统统带走，主机零残留。</div>
+      </div>
+      <div class="feature-card fade-in-up">
+        <div class="feature-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <div class="feature-title">¥999买断 · 零订阅</div>
+        <div class="feature-desc">一次支付<span class="feature-highlight">¥999</span>，终身使用。没有月费、没有年费、没有续费焦虑。你花的每一分钱都在积累属于你的资产——停付不停用，数据不赎回。</div>
+      </div>
+      <div class="feature-card fade-in-up">
+        <div class="feature-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg></div>
+        <div class="feature-title">跨设备随行 · 无缝切换</div>
+        <div class="feature-desc">办公室电脑、家里笔记本、出差借用的电脑——插入U盘，你的AI环境、模型配置、技能设置全部同步。换设备不用重新配置，你的工作站跟着你走。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Application Scenarios ===== -->
+<section class="scenarios section-padding" id="scenarios">
+  <div class="container">
+    <div class="section-header fade-in-up">
+      <h2 class="section-title">5个适用场景</h2>
+      <p class="section-subtitle">从独立开发者到学生研究者，¥999的AI基础设施人人可用</p>
+    </div>
+    <div class="scenario-grid">
+      <div class="scenario-card fade-in-up">
+        <div class="scenario-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="scenario-title">独立开发者</div>
+        <div class="scenario-desc">一台U盘替代多个API订阅，本地推理完成代码辅助、文档生成、测试用例设计。¥999买断，成本降90%，数据零泄露。</div>
+      </div>
+      <div class="scenario-card fade-in-up">
+        <div class="scenario-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+        <div class="scenario-title">KOL / 内容创作者</div>
+        <div class="scenario-desc">随身AI工作站帮你完成选题分析、文案润色、评论回复。任何电脑插入即用，创作不间断、灵感不等待。</div>
+      </div>
+      <div class="scenario-card fade-in-up">
+        <div class="scenario-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg></div>
+        <div class="scenario-title">跨境电商</div>
+        <div class="scenario-desc">商品描述多语言生成、客户咨询自动回复、竞品分析报告——一台U盘搞定全链路AI辅助，出差也不断线。</div>
+      </div>
+      <div class="scenario-card fade-in-up">
+        <div class="scenario-icon">✈️</div>
+        <div class="scenario-title">出差职场人</div>
+        <div class="scenario-desc">飞机上、酒店里、客户现场——没有网络也能用AI。U盘插入任何电脑，3秒启动工作站，拔走零残留。</div>
+      </div>
+      <div class="scenario-card fade-in-up">
+        <div class="scenario-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5"/></svg></div>
+        <div class="scenario-title">学生研究者</div>
+        <div class="scenario-desc">论文辅助、数据分析、知识问答——一台U盘替代昂贵API套餐，实验室电脑插入即用，宿舍笔记本无缝切换。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Comparison Guide ===== -->
+<section class="compare-guide section-padding" id="compare">
+  <div class="container">
+    <div class="section-header fade-in-up">
+      <h2 class="section-title">需要更大模型、更深推理？</h2>
+      <p class="section-subtitle">龙虾U盘是起步，龙虾移动硬盘是进阶</p>
+    </div>
+    <div class="compare-box fade-in-up">
+      <div class="compare-question">U盘64GB适合轻量推理和日常AI辅助，当你需要更深度的模型推理、更大的RAG知识库、更快的数据传输速度时——</div>
+      <div class="compare-desc">龙虾移动硬盘提供NVMe SSD ≥1000MB/s传输速度、1TB/2TB存储空间、预装离线量化模型+50GB RAG知识库，断网也能深度推理。存储4-32倍、速度10倍+、模型更深、知识库更广。</div>
+      <a href="hdd.html" class="compare-link">了解龙虾移动硬盘 →<span class="compare-link-arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA Section ===== -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="cta-title fade-in-up">¥999，买断你的随身AI工作站</div>
+    <div class="cta-desc fade-in-up">龙虾U盘，即插即用、数据100%本地、主机零残留、买断无订阅。你的AI，由你掌控。</div>
+    <div class="cta-buttons fade-in-up">
+      <a href="#features" class="btn-primary">立即购买 ¥999 →</a>
+      <a href="#" class="btn-outline-white club-join-trigger">加入 Agent 俱乐部</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer class="footer" id="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-name">智体共合科技（无锡）有限公司 · <span class="en">594agent.com</span></div>
+        <div class="footer-brand-desc">
+          赛道：AI + Web3 + DePIN<br>
+          去中心化多智能体协作网络的构建者 · 中小微企业与超级个体的AI基础设施提供商
+        </div>
+        <div class="footer-promises" style="margin-top:16px;">
+          <strong style="color:rgba(255,255,255,0.85);">三大核心承诺：</strong>数据不出门 · 断网不停机 · 买断无订阅
+        </div>
+        <div class="footer-compliance">
+          <strong style="color:rgba(255,255,255,0.7);">合规底线：</strong>算法备案100% · 数据本地化加密 · 信创全栈适配 · AI内容双重标识 · 积分法币结算 · 绿色算力
+        </div>
+      </div>
+      <div>
+        <div class="footer-nav-heading">产品</div>
+        <div class="footer-nav-links">
+          <div class="footer-nav-sub">Agent 产品</div>
+          <a href="openclaw.html">OpenClaw</a>
+          <a href="digital-human.html">智体数字人</a>
+          <div class="footer-nav-sub">硬件产品</div>
+          <a href="ai-box.html">小龙虾盒子</a>
+          <a href="udisk.html">龙虾U盘</a>
+          <a href="hdd.html">龙虾移动硬盘</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-nav-heading">基础设施</div>
+        <div class="footer-nav-links">
+          <a href="computing-network.html">龙虾算网</a>
+          <a href="federation.html">智体联邦</a>
+          <a href="lingxia-platform.html">灵虾平台</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-nav-heading">关于</div>
+        <div class="footer-nav-links">
+          <a href="about.html">关于我们</a>
+          <a href="business.html">商务合作</a>
+          <a href="contact.html">联系我们</a>
+        </div>
+      </div>
+      <div class="footer-qr">
+        <div class="footer-qr-heading">扫码关注/加入</div>
+        <div class="footer-qr-codes">
+          <div class="footer-qr-item">
+            <img src="gongzhonghao.jpg" alt="公众号二维码" />
+            <div class="footer-qr-item-label">公众号</div>
+          </div>
+          <div class="footer-qr-item">
+            <img src="ZhiTiAgentclub.png" alt="智体Agent俱乐部" />
+            <div class="footer-qr-item-label">扫码加入俱乐部</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="footer-copy en">© 2026 智体共合科技（无锡）有限公司 版权所有</div>
+  </div>
+</footer>
+
+<script>
+// ===== Navbar scroll effect =====
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+});
+
+// ===== Hamburger menu =====
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('active');
+    mobileMenu.classList.remove('open');
+  });
+});
+// 移动端手风琴展开
+mobileMenu.querySelectorAll('.mobile-accordion-toggle').forEach(toggle => {
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggle.classList.toggle('open');
+    toggle.nextElementSibling.classList.toggle('open');
+  });
+});
+
+// ===== Fade-in-up animation =====
+const fadeElements = document.querySelectorAll('.fade-in-up');
+const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      fadeObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+fadeElements.forEach(el => fadeObserver.observe(el));
+
+// ===== Smooth scroll for anchor links =====
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    if (this.classList.contains('club-join-trigger')) return;
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      const offset = navbar.offsetHeight;
+      const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+<!-- ===== Club Join Modal ===== -->
+<div class="club-modal" id="clubModal" aria-hidden="true">
+  <div class="club-modal-overlay" data-close-modal></div>
+  <div class="club-modal-content">
+    <button class="club-modal-close" data-close-modal aria-label="关闭">&times;</button>
+    <div class="club-modal-qr">
+      <img src="ZhiTiAgentclub.png" alt="智体Agent俱乐部二维码">
+    </div>
+    <div class="club-modal-title">加入 Agent 俱乐部</div>
+    <div class="club-modal-desc">微信扫码，立即加入智体 Agent 俱乐部</div>
+  </div>
+</div>
+<script>
+// ===== Club Join Modal =====
+const clubModal = document.getElementById('clubModal');
+if (clubModal) {
+  const openClubModal = () => {
+    clubModal.classList.add('active');
+    clubModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+  const closeClubModal = () => {
+    clubModal.classList.remove('active');
+    clubModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+  document.querySelectorAll('.club-join-trigger').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openClubModal();
+    });
+  });
+  clubModal.querySelectorAll('[data-close-modal]').forEach(el => {
+    el.addEventListener('click', closeClubModal);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && clubModal.classList.contains('active')) closeClubModal();
+  });
+}
+</script>
+</body>
+</html>
