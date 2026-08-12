@@ -1,0 +1,21 @@
+sequenceDiagram
+    autonumber
+    participant U as 终端用户
+    participant LP as 灵虾平台(编排)
+    participant AG as Agent集群
+    participant A2A as A2A协议层
+    participant DN as 龙虾算网(DePIN)
+    participant LLM as 大模型服务
+
+    U->>LP: 提交业务任务
+    LP->>LP: 任务拆解 / 编排
+    LP->>AG: 分派子任务
+    AG->>A2A: 智能体互联协商
+    A2A-->>AG: 能力 / 意图匹配
+    AG->>DN: 申请算力(边缘 / 云)
+    DN-->>AG: 分配 DePIN 算力
+    AG->>LLM: 多模型调度推理
+    LLM-->>AG: 返回结果
+    AG->>LP: 汇聚子任务结果
+    LP->>U: 交付最终成果
+    AG->>DN: 算力结算 → Agent市场

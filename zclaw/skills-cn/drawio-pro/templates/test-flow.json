@@ -1,0 +1,26 @@
+{
+  "type": "flowchart",
+  "title": "AI龙虾盒子部署流程",
+  "direction": "LR",
+  "nodes": [
+    {"id": "n1", "label": "开箱通电", "color": "blue", "shape": "start", "layer": 0},
+    {"id": "n2", "label": "扫码激活", "color": "lightblue", "shape": "rounded", "layer": 0},
+    {"id": "n3", "label": "配置摄像头", "color": "lightblue", "shape": "rounded", "layer": 1},
+    {"id": "n4", "label": "选择场景", "color": "lightblue", "shape": "diamond", "layer": 1},
+    {"id": "n5", "label": "工业质检", "color": "green", "shape": "rounded", "layer": 2},
+    {"id": "n6", "label": "小微零售", "color": "green", "shape": "rounded", "layer": 2},
+    {"id": "n7", "label": "智慧社区", "color": "green", "shape": "rounded", "layer": 2},
+    {"id": "n8", "label": "7×24 运行", "color": "purple", "shape": "end", "layer": 3}
+  ],
+  "edges": [
+    {"from": "n1", "to": "n2", "label": "通电"},
+    {"from": "n2", "to": "n3", "label": "下一步"},
+    {"from": "n3", "to": "n4", "label": "配置"},
+    {"from": "n4", "to": "n5", "label": "工厂"},
+    {"from": "n4", "to": "n6", "label": "门店"},
+    {"from": "n4", "to": "n7", "label": "小区"},
+    {"from": "n5", "to": "n8", "label": ""},
+    {"from": "n6", "to": "n8", "label": ""},
+    {"from": "n7", "to": "n8", "label": ""}
+  ]
+}

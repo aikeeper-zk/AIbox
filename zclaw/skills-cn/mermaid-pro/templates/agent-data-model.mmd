@@ -1,0 +1,46 @@
+classDiagram
+    direction LR
+    class Agent {
+        +id : string
+        +name : string
+        +capabilities : Capability[]
+        +register()
+        +executeTask(Task)
+    }
+    class Task {
+        +id : string
+        +desc : string
+        +status : Status
+        +assignTo(Agent)
+    }
+    class Capability {
+        +type : string
+        +level : int
+    }
+    class DePINNode {
+        +nodeId : string
+        +compute : float
+        +provideCompute()
+    }
+    class ModelEndpoint {
+        +modelName : string
+        +infer(prompt)
+    }
+    class Ledger {
+        +recordTx(tx)
+        +settle(agent, amount)
+    }
+    Agent "1" *-- "0..*" Capability : 拥有
+    Agent "1" o-- "0..*" Task : 执行
+    Task "0..*" --> "1" DePINNode : 消耗算力
+    Agent "0..*" --> "1" ModelEndpoint : 调用
+    Task "1" --> "1" Ledger : 结算上链
+    classDef agentLayer fill:#eff6ff,stroke:#2563eb,color:#0f172a
+    classDef resLayer fill:#ecfdf5,stroke:#16a34a,color:#0f172a
+    classDef ledgerLayer fill:#fef2f2,stroke:#dc2626,color:#0f172a
+    class Agent agentLayer
+    class Capability agentLayer
+    class Task agentLayer
+    class DePINNode resLayer
+    class ModelEndpoint resLayer
+    class Ledger ledgerLayer

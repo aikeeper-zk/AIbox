@@ -1,0 +1,51 @@
+{
+  "type": "uml",
+  "title": "智能体系统类图",
+  "direction": "LR",
+  "nodes": [
+    {
+      "id": "c1", "label": "Agent", "stereotype": "<<abstract>>",
+      "attributes": ["+id : string", "+name : string", "#status : Status"],
+      "methods": ["+initialize() : void", "+execute() : Result", "#validate() : bool"],
+      "color": "lightblue", "layer": 0, "width": 200
+    },
+    {
+      "id": "c2", "label": "TaskAgent", "stereotype": "",
+      "attributes": ["+taskType : string", "-maxRetries : int"],
+      "methods": ["+execute() : Result", "+cancel() : void"],
+      "color": "green", "layer": 1, "width": 200
+    },
+    {
+      "id": "c3", "label": "DataAgent", "stereotype": "",
+      "attributes": ["+dataSource : string", "-batchSize : int"],
+      "methods": ["+process() : DataSet", "+export() : void"],
+      "color": "green", "layer": 1, "width": 200
+    },
+    {
+      "id": "c4", "label": "ITask", "stereotype": "<<interface>>",
+      "attributes": [],
+      "methods": ["+run() : void", "+getStatus() : Status"],
+      "color": "orange", "layer": 0, "width": 180
+    },
+    {
+      "id": "c5", "label": "Task", "stereotype": "",
+      "attributes": ["+taskId : string", "+priority : int", "+createdAt : Date"],
+      "methods": ["+assignTo(Agent) : void", "+complete() : bool"],
+      "color": "purple", "layer": 2, "width": 200
+    },
+    {
+      "id": "c6", "label": "Report", "stereotype": "",
+      "attributes": ["+reportId : string", "+content : string"],
+      "methods": ["+generate() : void", "+publish() : void"],
+      "color": "gray", "layer": 2, "width": 180
+    }
+  ],
+  "edges": [
+    {"from": "c2", "to": "c1", "umlType": "inheritance"},
+    {"from": "c3", "to": "c1", "umlType": "inheritance"},
+    {"from": "c2", "to": "c4", "umlType": "realization"},
+    {"from": "c3", "to": "c4", "umlType": "realization"},
+    {"from": "c1", "to": "c5", "umlType": "association", "label": "执行"},
+    {"from": "c6", "to": "c5", "umlType": "aggregation", "label": "包含"}
+  ]
+}

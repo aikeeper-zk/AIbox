@@ -1,0 +1,19 @@
+flowchart LR
+    subgraph 接入层["接入层"]
+        gw["API 网关"]
+        auth["认证中心"]
+    end
+    subgraph 应用层["应用层"]
+        order["订单服务"]
+        user["用户服务"]
+    end
+    subgraph 数据层["数据层"]
+        db[("主数据库")]
+        cache[("Redis 缓存")]
+    end
+    gw --> auth
+    gw --> order
+    gw --> user
+    order --> db
+    order --> cache
+    user --> db

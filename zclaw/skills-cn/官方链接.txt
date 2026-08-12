@@ -1,0 +1,4 @@
+官网：www.594agent.com
+
+
+直接在openclaw的交互页，对AI发出安装指令，可以一键把智体的skill全部打包安装。

@@ -1,0 +1,11 @@
+flowchart TD
+    start["用户打开 App"] --> input["输入需求描述"]
+    input --> analyze{"AI 理解意图?"}
+    analyze -->|是| gen["生成 Mermaid 代码"]
+    analyze -->|否| clarify["追问澄清"]
+    clarify --> input
+    gen --> render["渲染验证循环"]
+    render --> ok{"渲染成功?"}
+    ok -->|是| done["交付图表"]
+    ok -->|否| fix["回灌错误修正"]
+    fix --> gen

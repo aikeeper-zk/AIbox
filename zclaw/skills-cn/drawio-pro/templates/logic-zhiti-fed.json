@@ -1,0 +1,37 @@
+{
+  "type": "architecture",
+  "title": "智体联邦·去中心化多智能体协作架构",
+  "direction": "LR",
+  "nodes": [
+    {"id": "n1", "label": "OPC超级个体", "color": "blue", "shape": "start", "layer": 0, "width": 130},
+    {"id": "n2", "label": "企业用户", "color": "blue", "shape": "start", "layer": 0},
+    {"id": "n3", "label": "开发者", "color": "blue", "shape": "start", "layer": 0},
+    {"id": "n4", "label": "Agent市场", "color": "lightblue", "shape": "rounded", "layer": 1},
+    {"id": "n5", "label": "A2A协议网关", "color": "orange", "shape": "diamond", "layer": 1, "width": 160, "height": 60},
+    {"id": "n6", "label": "多Agent协作引擎\n任务分解/路由/聚合", "color": "lightblue", "shape": "rounded", "layer": 1, "width": 170, "height": 60},
+    {"id": "n7", "label": "小龙虾AI盒子\n边缘推理节点", "color": "green", "shape": "rounded", "layer": 2},
+    {"id": "n8", "label": "龙虾算网\nDePIN算力网络", "color": "green", "shape": "cylinder", "layer": 2, "width": 170},
+    {"id": "n9", "label": "灵虾平台\n云端编排", "color": "green", "shape": "rounded", "layer": 2},
+    {"id": "n10", "label": "算力积分\n激励机制", "color": "purple", "shape": "rounded", "layer": 3},
+    {"id": "n11", "label": "智能合约\n结算层", "color": "red", "shape": "cylinder", "layer": 3, "width": 150},
+    {"id": "n12", "label": "数据安全\n加密芯片+TEE", "color": "gray", "shape": "rect", "layer": 3, "width": 180},
+    {"id": "n13", "label": "去中心化\n协作网络", "color": "purple", "shape": "end", "layer": 4, "width": 160}
+  ],
+  "edges": [
+    {"from": "n1", "to": "n4", "label": "选购Agent"},
+    {"from": "n2", "to": "n4", "label": "选购Agent"},
+    {"from": "n3", "to": "n4", "label": "发布Agent"},
+    {"from": "n4", "to": "n5", "label": "调用"},
+    {"from": "n5", "to": "n6", "label": "路由"},
+    {"from": "n6", "to": "n7", "label": "边缘执行"},
+    {"from": "n6", "to": "n8", "label": "算力调度"},
+    {"from": "n6", "to": "n9", "label": "云端协同"},
+    {"from": "n8", "to": "n10", "label": "积分激励"},
+    {"from": "n7", "to": "n12", "label": "安全防护"},
+    {"from": "n9", "to": "n11", "label": "自动结算"},
+    {"from": "n10", "to": "n13", "label": ""},
+    {"from": "n11", "to": "n13", "label": ""},
+    {"from": "n12", "to": "n13", "label": ""},
+    {"from": "n5", "to": "n13", "label": "协议互联"}
+  ]
+}

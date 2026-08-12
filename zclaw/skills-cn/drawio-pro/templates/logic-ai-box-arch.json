@@ -1,0 +1,36 @@
+{
+  "type": "architecture",
+  "title": "AI龙虾盒子技术架构",
+  "direction": "LR",
+  "nodes": [
+    {"id": "n1", "label": "工业质检", "color": "blue", "shape": "rounded", "layer": 0},
+    {"id": "n2", "label": "小微零售", "color": "blue", "shape": "rounded", "layer": 0},
+    {"id": "n3", "label": "智慧社区", "color": "blue", "shape": "rounded", "layer": 0},
+    {"id": "n4", "label": "AI Agent引擎", "color": "lightblue", "shape": "rounded", "layer": 1},
+    {"id": "n5", "label": "工作流编排", "color": "lightblue", "shape": "rounded", "layer": 1},
+    {"id": "n6", "label": "本地AI引擎\nOllama+千问7B", "color": "green", "shape": "rounded", "layer": 2},
+    {"id": "n7", "label": "智能调度器", "color": "orange", "shape": "diamond", "layer": 2},
+    {"id": "n8", "label": "云端AI网关\nDeepSeek/Qwen", "color": "green", "shape": "rounded", "layer": 2},
+    {"id": "n9", "label": "OpenClaw框架", "color": "purple", "shape": "rect", "layer": 3},
+    {"id": "n10", "label": "小龙虾AI系统\n定制Linux", "color": "purple", "shape": "rect", "layer": 3},
+    {"id": "n11", "label": "Lite版\nRK3588/N100", "color": "gray", "shape": "rounded", "layer": 4},
+    {"id": "n12", "label": "Pro版\nJetson Orin/AI9", "color": "gray", "shape": "rounded", "layer": 4}
+  ],
+  "edges": [
+    {"from": "n1", "to": "n4", "label": ""},
+    {"from": "n2", "to": "n4", "label": ""},
+    {"from": "n3", "to": "n4", "label": ""},
+    {"from": "n4", "to": "n5", "label": ""},
+    {"from": "n5", "to": "n6", "label": "本地"},
+    {"from": "n5", "to": "n7", "label": "调度"},
+    {"from": "n5", "to": "n8", "label": "云端"},
+    {"from": "n7", "to": "n6", "label": ""},
+    {"from": "n7", "to": "n8", "label": ""},
+    {"from": "n6", "to": "n9", "label": ""},
+    {"from": "n8", "to": "n9", "label": ""},
+    {"from": "n7", "to": "n9", "label": ""},
+    {"from": "n9", "to": "n10", "label": ""},
+    {"from": "n10", "to": "n11", "label": "Lite"},
+    {"from": "n10", "to": "n12", "label": "Pro"}
+  ]
+}

@@ -1,0 +1,16 @@
+classDiagram
+    class Agent {
+        +String id
+        +String name
+        +act()
+    }
+    class Skill {
+        +String name
+        +execute()
+    }
+    class Task {
+        +String goal
+        +run()
+    }
+    Agent "1" *-- "0..*" Skill : 拥有
+    Agent "1" *-- "0..*" Task : 执行

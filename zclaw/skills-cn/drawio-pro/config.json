@@ -1,0 +1,9 @@
+{
+  "name": "drawio-pro",
+  "version": "1.0.0",
+  "description": "Draw.io 专业绘图助手",
+  "engine": "python3",
+  "scripts": {
+    "build": "python3 scripts/build_drawio.py"
+  }
+}

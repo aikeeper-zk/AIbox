@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor 用户
+    participant 助手 as 绘图助手
+    participant 引擎 as Mermaid 引擎
+    用户->>助手: 描述要画的图
+    助手->>助手: 选图类型 + 生成代码
+    助手->>引擎: 渲染 .mmd
+    alt 渲染成功
+        引擎-->>助手: 返回 PNG
+        助手-->>用户: 交付图表
+    else 渲染失败
+        引擎-->>助手: 返回错误
+        助手->>助手: 修正代码
+        助手->>引擎: 重新渲染
+    end

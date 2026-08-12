@@ -1,0 +1,22 @@
+{
+  "theme": "default",
+  "look": "classic",
+  "fontFamily": "'Noto Serif CJK SC', 'Noto Sans CJK SC', sans-serif",
+  "securityLevel": "loose",
+  "themeVariables": {
+    "fontFamily": "'Noto Serif CJK SC', sans-serif",
+    "fontSize": "16px",
+    "primaryColor": "#2563eb",
+    "primaryTextColor": "#0f172a",
+    "primaryBorderColor": "#1e40af",
+    "lineColor": "#475569",
+    "secondaryColor": "#e0f2fe",
+    "tertiaryColor": "#f1f5f9",
+    "background": "#ffffff",
+    "mainBkg": "#eff6ff",
+    "nodeBorder": "#2563eb",
+    "clusterBkg": "#f8fafc",
+    "clusterBorder": "#cbd5e1",
+    "titleColor": "#0f172a"
+  }
+}

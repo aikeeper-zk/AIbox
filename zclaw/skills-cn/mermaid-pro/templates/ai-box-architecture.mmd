@@ -1,0 +1,86 @@
+---
+title: AI龙虾盒子技术架构图
+---
+flowchart TB
+    %% 样式定义
+    classDef appLayer fill:#e0f2fe,stroke:#0284c7,color:#0f172a
+    classDef capLayer fill:#dcfce7,stroke:#16a34a,color:#0f172a
+    classDef aiLayer fill:#fef3c7,stroke:#d97706,color:#0f172a
+    classDef sysLayer fill:#f3e8ff,stroke:#9333ea,color:#0f172a
+    classDef hwLayer fill:#fce7f3,stroke:#db2777,color:#0f172a
+    classDef cloudLayer fill:#e0e7ff,stroke:#4f46e5,color:#0f172a
+
+    %% ===== 云端层 =====
+    subgraph Cloud["☁️ 云端 · 594agent.com 平台"]
+        CloudGW["云端AI网关\nDeepSeek / Qwen API"]
+        CloudMgt["SaaS管理后台\n设备运维 / 监控"]
+        CloudStore["云端存储\n数据备份 / 同步"]
+    end
+
+    %% ===== 应用层 =====
+    subgraph App["📱 应用场景层"]
+        App1["工业质检\n缺陷识别 / 质量监控"]
+        App2["小微零售\n客流分析 / 库存管理"]
+        App3["智慧社区\n门禁 / 车牌 / 异常预警"]
+        AppMarket["插件市场\n生态扩展"]
+    end
+
+    %% ===== 能力层 =====
+    subgraph Cap["⚙️ AI Agent & 工作流层"]
+        AgentEngine["AI Agent引擎\n任务理解 / 智能执行"]
+        WorkflowEngine["工作流编排引擎\n零代码可视化编排"]
+        SmartStore["智能存储引擎\n本地↔云端智能调度"]
+    end
+
+    %% ===== AI引擎层 =====
+    subgraph AI["🧠 AI引擎层"]
+        LocalEngine["本地AI引擎\nOllama + 千问7B/32B\n离线推理"]
+        HybridScheduler["智能调度器\n网络状况 / 任务复杂度 / 数据敏感性\n本地↔云端无感切换"]
+    end
+
+    %% ===== 系统层 =====
+    subgraph Sys["💻 系统平台层"]
+        OpenClaw["OpenClaw统一管理框架\n设备管理 / Agent编排"]
+        ClawOS["小龙虾AI系统\n定制Linux / AI负载优化"]
+    end
+
+    %% ===== 硬件层 =====
+    subgraph HW["🔧 硬件层"]
+        Lite["Lite版\nRK3588 / Intel N100\nNPU 6-10 TOPS\n8-16GB / 256-512GB\n1-2路摄像头\n¥4,999"]
+        Pro["Pro版\nAMD AI9 HX / Jetson Orin\nNPU 50-80 TOPS\n32-64GB / 1-2TB SSD\n4-8路摄像头\n¥16,999"]
+        Cam["摄像头接入\nRTSP / USB / 网络"]
+    end
+
+    %% ===== 连接关系 =====
+    App1 --> AgentEngine
+    App2 --> AgentEngine
+    App3 --> AgentEngine
+    AppMarket --> OpenClaw
+
+    AgentEngine --> WorkflowEngine
+    AgentEngine --> SmartStore
+    WorkflowEngine --> OpenClaw
+
+    LocalEngine --> HybridScheduler
+    HybridScheduler --> CloudGW
+    HybridScheduler --> LocalEngine
+
+    SmartStore --> ClawOS
+    SmartStore --> CloudStore
+
+    CloudGW --> CloudMgt
+    CloudMgt --> CloudStore
+
+    OpenClaw --> ClawOS
+    ClawOS --> Lite
+    ClawOS --> Pro
+    Cam --> Lite
+    Cam --> Pro
+
+    %% 应用样式
+    class App1,App2,App3,AppMarket appLayer
+    class AgentEngine,WorkflowEngine,SmartStore capLayer
+    class LocalEngine,HybridScheduler aiLayer
+    class OpenClaw,ClawOS sysLayer
+    class Lite,Pro,Cam hwLayer
+    class CloudGW,CloudMgt,CloudStore cloudLayer
