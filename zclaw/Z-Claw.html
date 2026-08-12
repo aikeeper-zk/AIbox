@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="LOGO_64x64.ico" type="image/x-icon">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Z-Claw 虾盘 - 启动导航</title>
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #13131a;
+  --surface2: #1a1a24;
+  --border: #252530;
+  --border-hover: #3a3a4a;
+  --text: #e4e4ed;
+  --text-secondary: #9090a0;
+  --text-muted: #606070;
+  --accent: #ff6b35;
+  --accent-glow: rgba(255,107,53,0.18);
+  --accent-subtle: rgba(255,107,53,0.08);
+  --green: #34d399;
+  --green-glow: rgba(52,211,153,0.2);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, "SF Pro Text", "Microsoft YaHei", "PingFang SC", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,107,53,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 80% at 90% 30%, rgba(255,107,53,0.03) 0%, transparent 70%);
+}
+
+.container { max-width: 820px; margin: 0 auto; padding: 48px 24px 60px; }
+
+/* ── Header ── */
+.header { text-align: center; margin-bottom: 44px; }
+.header h1 { font-size: 2.8em; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+.header h1 .brand { background: linear-gradient(135deg, #ff6b35 0%, #ff8f5e 50%, #ff6b35 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.header h1 .version {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff6b35, #e85a28);
+  color: #fff;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.42em;
+  font-weight: 700;
+  margin-left: 10px;
+  vertical-align: middle;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 12px var(--accent-glow);
+}
+.header .subtitle {
+  color: var(--text-secondary);
+  font-size: 1.05em;
+  font-weight: 400;
+  opacity: 0.8;
+  letter-spacing: 0.5px;
+}
+
+/* ── Status Bar ── */
+.status-bar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: var(--transition);
+}
+.status-bar:hover { border-color: var(--border-hover); }
+.status-dot {
+  width: 13px; height: 13px; border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+}
+.status-dot::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.status-dot.off { background: #555; box-shadow: 0 0 0 0 transparent; }
+.status-dot.on { background: var(--green); box-shadow: 0 0 0 0 var(--green-glow); animation: dotPulse 2.5s infinite; }
+.status-dot.on::after { opacity: 1; box-shadow: 0 0 14px 2px var(--green-glow); }
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--green-glow); }
+  50% { box-shadow: 0 0 0 8px transparent; }
+}
+.status-text { font-size: 0.95em; color: var(--text-secondary); flex: 1; }
+.status-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9em;
+  font-weight: 600;
+  padding: 7px 16px;
+  border: 1px solid rgba(255,107,53,0.3);
+  border-radius: 20px;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.status-link:hover { background: var(--accent-subtle); border-color: var(--accent); }
+
+/* ── OS Tabs ── */
+.os-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 32px; }
+.os-tab {
+  padding: 13px 36px;
+  border: 2px solid var(--border);
+  border-radius: 28px;
+  cursor: pointer;
+  font-size: 1.05em;
+  font-weight: 600;
+  background: var(--surface);
+  color: var(--text-secondary);
+  transition: var(--transition);
+  user-select: none;
+}
+.os-tab:hover { border-color: var(--border-hover); color: var(--text); }
+.os-tab.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-subtle);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* ── Panels ── */
+.panel { display: none; animation: fadeSlideIn 0.35s ease; }
+.panel.active { display: block; }
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 18px;
+  transition: var(--transition);
+}
+.card:hover { border-color: var(--border-hover); }
+.card h3 { color: var(--accent); margin-bottom: 14px; font-size: 1.15em; font-weight: 700; letter-spacing: 0.3px; }
+.card p { color: var(--text-secondary); line-height: 1.65; font-size: 0.95em; }
+
+/* ── Steps ── */
+.step { display: flex; align-items: flex-start; gap: 16px; margin: 14px 0; }
+.step-num {
+  background: linear-gradient(135deg, #ff6b35, #e85a28);
+  color: #fff;
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.9em;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px var(--accent-glow);
+}
+.step-text { flex: 1; padding-top: 4px; }
+.step-text strong { color: var(--text); }
+.step-text code {
+  background: var(--surface2);
+  padding: 3px 10px;
+  border-radius: 5px;
+  color: var(--accent);
+  font-size: 0.92em;
+  font-family: "SF Mono", "Consolas", "Fira Code", monospace;
+  border: 1px solid var(--border);
+}
+
+/* ── Grid ── */
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+.grid-item {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 20px;
+  transition: var(--transition);
+  cursor: default;
+}
+.grid-item:hover { border-color: var(--border-hover); background: #1e1e2a; transform: translateY(-1px); }
+.grid-item.clickable { cursor: pointer; }
+.grid-item.clickable:hover { border-color: var(--accent); box-shadow: 0 4px 16px var(--accent-glow); }
+.grid-item h4 { color: var(--text); margin-bottom: 6px; font-size: 1em; font-weight: 600; }
+.grid-item p { color: var(--text-muted); font-size: 0.85em; line-height: 1.5; }
+.grid-item a { color: var(--accent); text-decoration: none; }
+.grid-item a:hover { text-decoration: underline; }
+
+/* ── Section Title ── */
+.section-title {
+  color: var(--text-muted);
+  font-size: 0.82em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  margin: 36px 0 14px;
+  padding-left: 4px;
+}
+
+/* ── Divider ── */
+.section-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 20px 0 8px;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 28px 40px;
+  margin-top: 50px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.84em;
+  background: var(--surface);
+}
+.footer p { margin-bottom: 8px; }
+.footer a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
+}
+.footer a:hover { text-decoration: underline; color: var(--accent-light); }
+
+/* ── Warning / Tip ── */
+.tip {
+  background: rgba(255,193,7,0.06);
+  border: 1px solid rgba(255,193,7,0.15);
+  border-radius: var(--radius-xs);
+  padding: 11px 16px;
+  margin-top: 14px;
+  color: #cba040;
+  font-size: 0.88em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.extra-link {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+.extra-link code {
+  background: var(--surface2);
+  padding: 2px 10px;
+  border-radius: 5px;
+  color: var(--accent);
+  font-size: 0.92em;
+  border: 1px solid var(--border);
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .header h1 { font-size: 2em; }
+  .grid { grid-template-columns: 1fr; }
+  .os-tab { padding: 10px 22px; font-size: 0.95em; }
+  .container { padding: 32px 16px 40px; }
+}
+.logo { width: 90px; height: 90px; vertical-align: middle; border-radius: 14px; object-fit: cover; }
+.logo-sm { width: 40px; height: 40px; vertical-align: middle; border-radius: 8px; object-fit: cover; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+    <h1><img src="LOGO.png" class="logo"> <span class="brand">Z-Claw</span> 虾盘 <span class="version">v1.0</span></h1>
+    <p class="subtitle">Portable AI Agent — 插上就能用的 AI 助手</p>
+</div>
+
+<!-- Status Bar -->
+<div class="status-bar">
+    <div class="status-dot off" id="statusDot"></div>
+    <span class="status-text" id="statusText">OpenClaw 未运行</span>
+    <a href="#" id="statusLink" class="status-link" style="display:none" target="_blank">打开控制台 →</a>
+</div>
+
+<!-- OS Tabs -->
+<div class="os-tabs">
+    <div class="os-tab active" onclick="switchOS('mac')">🍎 macOS</div>
+    <div class="os-tab" onclick="switchOS('win')">🪟 Windows</div>
+</div>
+
+<!-- Mac Panel -->
+<div class="panel active" id="panel-mac">
+    <div class="card">
+        <h3>🚀 快速启动</h3>
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text">双击 <code>Mac-Start.command</code></div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text">首次运行自动打开<b>配置页面</b>，选模型、填 API Key 即可</div>
+        </div>
+        <div class="tip">⚠️ 首次运行如果提示"无法验证开发者"：右键点击 → 打开</div>
+        <div class="extra-link">📝 也可以直接双击 <code>Config.html</code> 打开中文配置页面</div>
+    </div>
+
+    <div class="card">
+        <h3>⚙️ 全部功能</h3>
+        <p style="margin-bottom:4px">双击 <code>Mac-Menu.command</code> 打开全功能菜单：</p>
+        <div class="grid">
+            <div class="grid-item"><h4>🛠 配置页面</h4><p>选模型 · 填 Key · 接 QQ</p></div>
+            <div class="grid-item"><h4>💬 QQ Bot</h4><p>已预装，只需 AppID + Secret</p></div>
+            <div class="grid-item"><h4>🔍 诊断修复</h4><p>openclaw doctor 一键检测</p></div>
+            <div class="grid-item"><h4>📦 备份恢复</h4><p>配置 · 记忆一键存档</p></div>
+            <div class="grid-item"><h4>🧩 技能浏览</h4><p>52 个预装技能</p></div>
+            <div class="grid-item"><h4>📊 系统信息</h4><p>版本 · 端口 · 运行状态</p></div>
+        </div>
+    </div>
+</div>
+
+<!-- Windows Panel -->
+<div class="panel" id="panel-win">
+    <div class="card">
+        <h3>🚀 快速启动</h3>
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text">双击 <code>Windows-Start.bat</code></div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text">首次运行自动打开<b>配置页面</b>，选模型、填 API Key 即可</div>
+        </div>
+        <div class="tip">⚠️ 如果弹出安全警告：点击"更多信息" → "仍要运行"</div>
+    </div>
+
+    <div class="card">
+        <h3>⚙️ 全部功能</h3>
+        <p style="margin-bottom:4px">双击 <code>Windows-Menu.bat</code> 打开全功能菜单：</p>
+        <div class="grid">
+            <div class="grid-item"><h4>🛠 配置向导</h4><p>选模型 · 填 Key · 选平台</p></div>
+            <div class="grid-item"><h4>💬 QQ Bot</h4><p>腾讯官方 · 3 条命令搞定</p></div>
+            <div class="grid-item"><h4>🔍 诊断修复</h4><p>openclaw doctor 一键检测</p></div>
+            <div class="grid-item"><h4>📦 备份恢复</h4><p>配置 · 记忆一键存档</p></div>
+            <div class="grid-item"><h4>🧩 技能浏览</h4><p>52 个预装技能</p></div>
+            <div class="grid-item"><h4>🌐 镜像配置</h4><p>npm 淘宝镜像加速</p></div>
+        </div>
+    </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- Common sections -->
+<div class="section-title">🤖 支持的 AI 模型（国内免翻墙）</div>
+<div class="card" style="padding:24px 28px 16px">
+    <div class="grid">
+        <div class="grid-item"><h4>🧠 DeepSeek</h4><p>编程首选 · 性价比之王</p></div>
+        <div class="grid-item"><h4>📚 Kimi K2.5</h4><p>256K 上下文 · 长文档</p></div>
+        <div class="grid-item"><h4>🌟 通义千问</h4><p>免费额度大 · 均衡全面</p></div>
+        <div class="grid-item"><h4>🎓 智谱 GLM</h4><p>学术 · 中文 NLP 强</p></div>
+        <div class="grid-item"><h4>🎙 MiniMax</h4><p>语音 · 多模态生成</p></div>
+        <div class="grid-item"><h4>⚡ 豆包 Doubao</h4><p>字节跳动 · 火山引擎</p></div>
+    </div>
+</div>
+
+<div class="section-title">📖 更多资料</div>
+<div class="card" style="padding:24px 28px 16px">
+    <div class="grid">
+        <div class="grid-item clickable" onclick="window.open('Welcome.html')"><h4>📖 帮助文档</h4><p>完整使用指南 · 快速上手</p></div>
+        <div class="grid-item clickable" onclick="window.open('SkillHub.html')"><h4>🎯 技能市场</h4><p>39 个精选技能等你装</p></div>
+        <div class="grid-item"><h4>🌐 官网</h4><p><a href="https://594agent.com" target="_blank">594agent.com</a></p></div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>
+        <a href="https://594agent.com" target="_blank">Z-Claw 官网</a> &nbsp;·&nbsp;
+        <a href="https://github.com/aikeeper-zk/AIbox" target="_blank">GitHub</a> &nbsp;·&nbsp;
+        <a href="https://github.com/openclaw/openclaw" target="_blank">OpenClaw 官方</a>
+    </p>
+    <p>Made with <img src="LOGO.png" class="logo-sm"> by <a href="https://github.com/aikeeper-zk/AIbox">ZHITI Agent</a></p>
+</div>
+
+</div>
+
+<script>
+// Auto-detect OS
+const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+if (!isMac) switchOS('win');
+
+function switchOS(os) {
+    document.querySelectorAll('.os-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelector('#panel-' + os).classList.add('active');
+    document.querySelectorAll('.os-tab')[os === 'mac' ? 0 : 1].classList.add('active');
+}
+
+// Check if gateway is running (scan 18789-18799)
+var _gwPort = null;
+async function checkStatus() {
+    var found = null;
+    if (_gwPort) {
+        // Fast path: check last known port first
+        try {
+            await fetch('http://127.0.0.1:' + _gwPort + '/', { mode: 'no-cors', cache: 'no-cache' });
+            found = _gwPort;
+        } catch(e) { _gwPort = null; }
+    }
+    if (!found) {
+        for (var p = 18789; p <= 18799; p++) {
+            try {
+                await fetch('http://127.0.0.1:' + p + '/', { mode: 'no-cors', cache: 'no-cache' });
+                found = p;
+                _gwPort = p;
+                break;
+            } catch(e) {}
+        }
+    }
+    if (found) {
+        document.getElementById('statusDot').className = 'status-dot on';
+        document.getElementById('statusText').textContent = 'OpenClaw 运行中 (端口 ' + found + ')';
+        var link = document.getElementById('statusLink');
+        link.style.display = 'inline';
+        link.href = 'http://127.0.0.1:' + found + '/#token=zclaw';
+    } else {
+        document.getElementById('statusDot').className = 'status-dot off';
+        document.getElementById('statusText').textContent = 'OpenClaw 未运行 — 请先双击启动脚本';
+        document.getElementById('statusLink').style.display = 'none';
+    }
+}
+checkStatus();
+setInterval(checkStatus, 5000);
+</script>
+</body>
+</html>

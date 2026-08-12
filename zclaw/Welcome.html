@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="LOGO_64x64.ico" type="image/x-icon">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Z-Claw 使用指南</title>
+<style>
+:root {
+  --primary: #6c5ce7;
+  --primary-dark: #5a4bd1;
+  --primary-light: #a29bfe;
+  --text: #2d2d3a;
+  --text-secondary: #6b6b7b;
+  --bg-light: #f5f4ff;
+  --white: #ffffff;
+  --border: #e8e6f2;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 24px 80px rgba(108, 92, 231, 0.18);
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, "SF Pro Text", "Microsoft YaHei", "PingFang SC", sans-serif;
+  min-height: 100vh;
+  padding: 36px 20px 50px;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 0%, rgba(108,92,231,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 85% 30%, rgba(118,75,162,0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 40% at 50% 100%, rgba(108,92,231,0.08) 0%, transparent 60%),
+    linear-gradient(160deg, #0f0b1f 0%, #1a1540 30%, #1a1040 60%, #0f0b1f 100%);
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius);
+  padding: 48px 44px;
+  box-shadow: var(--shadow), 0 0 0 1px rgba(255,255,255,0.08);
+  animation: cardIn 0.5s ease;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  margin-bottom: 44px;
+}
+.header h1 {
+  color: var(--text);
+  font-size: 2.3em;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+}
+.header .subtitle {
+  color: var(--text-secondary);
+  font-size: 1.05em;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.header-divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  border-radius: 2px;
+  margin: 16px auto 0;
+}
+
+/* ── Section ── */
+.section { margin-bottom: 38px; }
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--primary);
+  font-size: 1.25em;
+  font-weight: 700;
+  margin-bottom: 18px;
+  letter-spacing: 0.3px;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+  border-radius: 1px;
+}
+
+/* ── Steps ── */
+.steps { counter-reset: step; }
+.step {
+  position: relative;
+  padding: 22px 22px 22px 74px;
+  margin-bottom: 16px;
+  background: var(--bg-light);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  transition: var(--transition);
+  overflow: hidden;
+}
+.step:hover {
+  border-color: var(--primary-light);
+  transform: translateX(4px);
+  box-shadow: 0 6px 24px rgba(108,92,231,0.08);
+}
+.step::before {
+  content: '0' counter(step);
+  counter-increment: step;
+  position: absolute;
+  left: 18px;
+  top: 22px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1em;
+  box-shadow: 0 4px 14px rgba(108,92,231,0.3);
+}
+.step-title {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 1.05em;
+  margin-bottom: 8px;
+}
+.step-desc {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-size: 0.94em;
+}
+.step-desc code {
+  background: #e8e6ff;
+  padding: 2px 9px;
+  border-radius: 5px;
+  color: var(--primary);
+  font-size: 0.92em;
+  font-family: "SF Mono", "Consolas", "Fira Code", monospace;
+  font-weight: 500;
+}
+
+/* ── Success Box ── */
+.success-box {
+  background: linear-gradient(135deg, #e9fbf0, #d5f5e3);
+  border: 1px solid #a3e4bc;
+  padding: 16px 20px;
+  border-radius: var(--radius-sm);
+  margin-top: 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.success-box .icon { font-size: 1.3em; flex-shrink: 0; margin-top: 1px; }
+.success-box p {
+  color: #1a5c30;
+  margin: 0;
+  line-height: 1.6;
+  font-size: 0.93em;
+}
+.success-box code {
+  background: rgba(26,92,48,0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: #1a5c30;
+  font-family: "SF Mono", "Consolas", monospace;
+  font-size: 0.92em;
+}
+
+/* ── Model Grid ── */
+.model-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.model-item {
+  background: var(--bg-light);
+  padding: 16px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  transition: var(--transition);
+  cursor: default;
+}
+.model-item:hover {
+  border-color: var(--primary-light);
+  background: #eceaff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(108,92,231,0.1);
+}
+.model-item .icon { font-size: 1.3em; margin-right: 6px; }
+.model-item strong {
+  color: var(--primary);
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.98em;
+}
+.model-item span {
+  color: var(--text-secondary);
+  font-size: 0.85em;
+}
+
+/* ── Tip Box ── */
+.tip-box {
+  background: linear-gradient(135deg, #fef9e7, #fdf2d2);
+  border: 1px solid #f0d378;
+  padding: 16px 20px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.tip-box .icon { font-size: 1.3em; flex-shrink: 0; margin-top: 1px; }
+.tip-box .content { flex: 1; }
+.tip-box strong {
+  color: #7a5e10;
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.95em;
+}
+.tip-box p {
+  color: #8b6d1e;
+  margin: 0;
+  line-height: 1.65;
+  font-size: 0.93em;
+}
+.tip-box code {
+  background: rgba(122,94,16,0.12);
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: #7a5e10;
+  font-family: "SF Mono", "Consolas", monospace;
+  font-size: 0.92em;
+}
+
+/* ── Buttons ── */
+.btn-group { text-align: center; margin-top: 34px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 13px 28px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  text-decoration: none;
+  border-radius: 28px;
+  font-weight: 600;
+  font-size: 0.95em;
+  transition: var(--transition);
+  box-shadow: 0 4px 16px rgba(108,92,231,0.3);
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(108,92,231,0.4);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  box-shadow: none;
+}
+.btn-outline:hover {
+  background: rgba(108,92,231,0.06);
+  box-shadow: 0 4px 16px rgba(108,92,231,0.15);
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 28px 40px;
+  margin-top: 44px;
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.84em;
+  background: var(--white);
+  border-radius: var(--radius);
+}
+.footer p { margin-bottom: 8px; }
+.footer a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
+}
+.footer a:hover { text-decoration: underline; color: var(--primary-dark); }
+.logo-sm { width: 40px; height: 40px; vertical-align: middle; border-radius: 8px; object-fit: cover; }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .container { padding: 32px 22px; }
+  .header h1 { font-size: 1.7em; }
+  .model-grid { grid-template-columns: 1fr; }
+  .step { padding: 16px 16px 16px 60px; }
+  .step::before { left: 12px; top: 16px; width: 34px; height: 34px; }
+}
+
+.logo { width: 90px; height: 90px; vertical-align: middle; border-radius: 14px; object-fit: cover; }
+.logo-sm { width: 40px; height: 40px; vertical-align: middle; border-radius: 8px; object-fit: cover; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+    <h1><img src="LOGO.png" class="logo"> Z-Claw 使用指南</h1>
+    <p class="subtitle">AI 助手便携 U盘 · 三步开始使用</p>
+    <div class="header-divider"></div>
+</div>
+
+<div class="section">
+    <div class="section-title">🚀 快速开始</div>
+    <div class="steps">
+        <div class="step">
+            <div class="step-title">启动服务</div>
+            <div class="step-desc">
+                <strong>Windows</strong> &nbsp;双击 <code>Windows-Start.bat</code><br>
+                <strong>macOS</strong> &nbsp;&nbsp;&nbsp;双击 <code>Mac-Start.command</code>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-title">配置 AI 模型</div>
+            <div class="step-desc">
+                首次启动自动打开配置页 → 选模型 → 填 API Key → 保存
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-title">开始对话</div>
+            <div class="step-desc">
+                浏览器自动打开 <code>http://127.0.0.1:18789</code>，即可与 AI 对话
+            </div>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <span class="icon">✅</span>
+        <p>所有配置和对话记录保存在 U盘 <code>data/</code> 目录，Mac 和 Windows 自动共享！</p>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-title">🤖 推荐 AI 模型</div>
+    <div class="model-grid">
+        <div class="model-item">
+            <strong>🔥 DeepSeek</strong>
+            <span>编程首选 · 极便宜</span>
+        </div>
+        <div class="model-item">
+            <strong>📄 Kimi K2.5</strong>
+            <span>长文档处理专家</span>
+        </div>
+        <div class="model-item">
+            <strong>🆓 通义千问</strong>
+            <span>免费额度大</span>
+        </div>
+        <div class="model-item">
+            <strong>🌟 Claude</strong>
+            <span>最强理解能力</span>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-title">💡 遇到问题？</div>
+    <div class="tip-box">
+        <span class="icon">🔧</span>
+        <div class="content">
+            <strong>运行诊断工具</strong>
+            <p>
+                <strong>Windows</strong> &nbsp;<code>Windows-Diagnose.bat</code><br>
+                <strong>macOS</strong> &nbsp;&nbsp;<code>Mac-Diagnose.command</code>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="btn-group">
+    <a href="Config.html" class="btn">⚙ 打开配置页面</a>
+    <a href="https://594agent.com" class="btn btn-outline" target="_blank">📖 查看文档</a>
+</div>
+
+<div class="footer">
+    <p>
+        <a href="https://594agent.com" target="_blank">Z-Claw 官网</a> &nbsp;·&nbsp;
+        <a href="https://github.com/aikeeper-zk/AIbox" target="_blank">GitHub</a> &nbsp;·&nbsp;
+        <a href="https://github.com/openclaw/openclaw" target="_blank">OpenClaw 官方</a>
+    </p>
+    <p>Made with <img src="LOGO.png" class="logo-sm"> by <a href="https://github.com/aikeeper-zk/AIbox">ZHITI Agent</a></p>
+</div>
+
+</div>
+</body>
+</html>
