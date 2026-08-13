@@ -411,6 +411,142 @@ img { max-width: 100%; display: block; }
   transform: translateY(-2px);
 }
 
+/* ===== Z-Claw Launcher ===== */
+.zclaw {
+  background: linear-gradient(180deg, #fff8f2 0%, #fff 100%);
+  position: relative;
+  overflow: hidden;
+}
+.zclaw::before {
+  content: '';
+  position: absolute;
+  top: -160px;
+  right: -120px;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(249,115,22,0.12), transparent 70%);
+  pointer-events: none;
+}
+.zclaw-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  align-items: center;
+  gap: 48px;
+  background: #fff;
+  border: 1px solid rgba(194,65,12,0.12);
+  border-radius: 24px;
+  padding: 48px 56px;
+  box-shadow: 0 12px 40px rgba(124,45,18,0.1);
+}
+.zclaw-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #f97316, #c2410c);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 24px;
+  margin-bottom: 18px;
+}
+.zclaw-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+.zclaw-desc {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+.zclaw-points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.zclaw-point {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  background: #fff7f0;
+  border: 1px solid rgba(194,65,12,0.1);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.zclaw-point svg {
+  flex-shrink: 0;
+  color: #f97316;
+}
+.zclaw-download {
+  background: linear-gradient(135deg, #7c2d12 0%, #c2410c 100%);
+  border-radius: 18px;
+  padding: 36px 32px;
+  text-align: center;
+  color: #fff;
+}
+.zclaw-download-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.zclaw-download-sub {
+  font-size: 13px;
+  opacity: 0.85;
+  margin-bottom: 22px;
+}
+.zclaw-dl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.zclaw-dl-btn.win {
+  background: #fff;
+  color: #7c2d12;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+}
+.zclaw-dl-btn.win:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.28);
+}
+.zclaw-dl-btn.mac {
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.55);
+  color: #fff;
+}
+.zclaw-dl-btn.mac:hover {
+  background: rgba(255,255,255,0.22);
+  transform: translateY(-3px);
+}
+.zclaw-dl-btn .dl-small {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.75;
+}
+.zclaw-version {
+  font-size: 12px;
+  opacity: 0.75;
+  margin-top: 14px;
+  line-height: 1.6;
+}
+
 /* ===== Section Headers ===== */
 .section-header {
   text-align: center;
@@ -722,6 +858,9 @@ img { max-width: 100%; display: block; }
   .hamburger { display: flex; }
   .sub-hero-title { font-size: 28px; }
   .sub-hero-subtitle { font-size: 14px; }
+  .zclaw-card { grid-template-columns: 1fr; gap: 32px; padding: 32px 24px; }
+  .zclaw-title { font-size: 24px; }
+  .zclaw-points { grid-template-columns: 1fr; }
   .feature-grid { grid-template-columns: repeat(2, 1fr); }
   .dev-grid { grid-template-columns: 1fr; }
   .section-title { font-size: 24px; }
@@ -848,7 +987,39 @@ img { max-width: 100%; display: block; }
     <p class="sub-hero-subtitle fade-in-up">52+技能预装的AI智能体引擎，开箱即用、模型随选<br>不是又一个聊天框，而是你的AI技能操作系统</p>
     <div class="sub-hero-cta fade-in-up">
       <a href="#features" class="btn-primary">立即体验 →</a>
+      <a href="https://github.com/aikeeper-zk/AIbox" target="_blank" rel="noopener noreferrer" class="btn-outline-white">开源仓库 ↗</a>
       <a href="#dev-eco" class="btn-outline-white">开发者入驻</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Z-Claw Launcher ===== -->
+<section class="zclaw section-padding" id="zclaw">
+  <div class="container">
+    <div class="zclaw-card fade-in-up">
+      <div class="zclaw-left">
+        <div class="zclaw-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> 官方启动工具</div>
+        <h2 class="zclaw-title">Z-Claw 一键启动<br>让 OpenClaw 引擎秒级运行</h2>
+        <p class="zclaw-desc">告别命令行，下载即启。Z-Claw 自动检测环境依赖、拉起引擎、打开本地控制台——Windows & macOS 全平台支持，无需任何手动配置。</p>
+        <div class="zclaw-points">
+          <div class="zclaw-point"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> 双击启动，零配置</div>
+          <div class="zclaw-point"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 环境依赖自动检测</div>
+          <div class="zclaw-point"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg> 本地引擎随开随用</div>
+        </div>
+      </div>
+      <div class="zclaw-download fade-in-up">
+        <div class="zclaw-download-title">免费下载 Z-Claw</div>
+        <div class="zclaw-download-sub">选择你的平台，一键启动 OpenClaw 引擎</div>
+        <a href="#" class="zclaw-dl-btn win">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5v5.7h5.7V5.5H3zm6.8 0v5.7h11.2V5.5H9.8zM3 12.3v5.7h5.7v-5.7H3zm6.8 0v5.7h11.2v-5.7H9.8z"/></svg>
+          <span>Windows 版 <span class="dl-small">.exe</span></span>
+        </a>
+        <a href="#" class="zclaw-dl-btn mac">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0017 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 00-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06z"/><path d="M10 2c1 .5 2 2 2 5"/></svg>
+          <span>macOS 版 <span class="dl-small">.dmg</span></span>
+        </a>
+        <div class="zclaw-version">当前版本 v1.0.0 · 支持 Windows 10/11 · macOS 12+<br>下载后双击即可启动引擎</div>
+      </div>
     </div>
   </div>
 </section>
@@ -920,7 +1091,7 @@ img { max-width: 100%; display: block; }
   <div class="container">
     <div class="section-header fade-in-up">
       <h2 class="section-title">6大国产模型支持</h2>
-      <p class="section-subtitle">一键接入，模型随选，切换零成本</p>
+      <p class="section-subtitle">6大模型已全部支持，一键接入，本地离线可用，切换零成本</p>
     </div>
     <div class="specs-table-wrap fade-in-up">
       <table class="specs-table">
@@ -953,28 +1124,28 @@ img { max-width: 100%; display: block; }
             <td>智谱AI</td>
             <td>通用对话 · 知识问答 · 工具调用</td>
             <td>API</td>
-            <td>即将支持</td>
+            <td class="spec-highlight"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 支持</td>
           </tr>
           <tr>
             <td>Kimi</td>
             <td>月之暗面</td>
             <td>长文本处理 · 文档分析</td>
             <td>API</td>
-            <td>即将支持</td>
+            <td class="spec-highlight"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 支持</td>
           </tr>
           <tr>
             <td>百度文心</td>
             <td>百度</td>
             <td>中文理解 · 知识图谱 · 搜索增强</td>
             <td>API</td>
-            <td>即将支持</td>
+            <td class="spec-highlight"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 支持</td>
           </tr>
           <tr>
             <td>MiniMax</td>
             <td>MiniMax</td>
             <td>语音合成 · 多模态 · 长上下文</td>
             <td>API</td>
-            <td>即将支持</td>
+            <td class="spec-highlight"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 支持</td>
           </tr>
         </tbody>
       </table>
@@ -1061,6 +1232,7 @@ img { max-width: 100%; display: block; }
           <a href="computing-network.html">龙虾算网</a>
           <a href="federation.html">智体联邦</a>
           <a href="lingxia-platform.html">灵虾平台</a>
+          <a href="https://github.com/aikeeper-zk/AIbox" target="_blank" rel="noopener noreferrer">开源仓库</a>
         </div>
       </div>
       <div>

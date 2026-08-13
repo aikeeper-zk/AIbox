@@ -467,6 +467,17 @@ img { max-width: 100%; display: block; }
   transform: translateY(-8px);
   box-shadow: var(--shadow-hover);
 }
+.product-card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  flex-shrink: 0;
+  border: 1px solid rgba(124,45,18,0.1);
+}
 .product-card-top {
   display: flex;
   justify-content: space-between;
@@ -594,6 +605,44 @@ img { max-width: 100%; display: block; }
   color: var(--text-dark);
 }
 .opc-text p { margin-bottom: 24px; }
+.opc-text p:first-child {
+  padding-left: 20px;
+  border-left: 4px solid rgba(249,115,22,0.35);
+}
+.opc-capabilities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 28px;
+}
+.opc-capability {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.opc-capability:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+.opc-capability-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c2410c;
+  background: linear-gradient(135deg, rgba(249,115,22,0.14), rgba(194,65,12,0.06));
+  flex-shrink: 0;
+}
 .opc-highlight {
   color: var(--primary);
   font-weight: 700;
@@ -611,7 +660,28 @@ img { max-width: 100%; display: block; }
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.data-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(124,45,18,0.12);
+}
+.data-card-label-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.data-card-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c2410c;
+  background: linear-gradient(135deg, rgba(249,115,22,0.14), rgba(194,65,12,0.06));
+  flex-shrink: 0;
 }
 .data-card-label {
   font-size: 15px;
@@ -655,9 +725,9 @@ img { max-width: 100%; display: block; }
 }
 .opc-steps-flow {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  gap: 0;
+  gap: 12px;
   flex-wrap: wrap;
 }
 .opc-step {
@@ -665,8 +735,18 @@ img { max-width: 100%; display: block; }
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  padding: 20px 24px;
+  padding: 28px 24px 24px;
   position: relative;
+  background: #fff;
+  border: 1px solid rgba(124,45,18,0.06);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(124,45,18,0.06);
+  min-width: 120px;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.opc-step:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(124,45,18,0.12);
 }
 .opc-step-num {
   width: 48px;
@@ -680,6 +760,7 @@ img { max-width: 100%; display: block; }
   align-items: center;
   justify-content: center;
   font-family: 'Inter', sans-serif;
+  box-shadow: 0 8px 20px rgba(194,65,12,0.3);
 }
 .opc-step-label {
   font-size: 16px;
@@ -695,7 +776,9 @@ img { max-width: 100%; display: block; }
 .opc-step-arrow {
   font-size: 28px;
   color: var(--accent);
-  padding: 0 4px;
+  padding: 0;
+  align-self: center;
+  flex-shrink: 0;
 }
 .opc-cta {
   text-align: center;
@@ -727,30 +810,66 @@ img { max-width: 100%; display: block; }
 .sovereignty .section-title { color: #fff; }
 .sovereignty .section-subtitle { color: rgba(255,255,255,0.85); }
 .sovereignty-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 }
 .sovereignty-card {
-  background: rgba(255,255,255,0.95);
-  border-radius: var(--radius);
-  padding: 44px 36px;
+  position: relative;
+  background: rgba(255,255,255,0.97);
+  border-radius: 20px;
+  padding: 40px 30px;
   color: var(--text-dark);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
-  transition: transform 0.3s;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+  overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
-.sovereignty-card:hover { transform: translateY(-4px); }
-.sovereignty-card-icon { font-size: 40px; margin-bottom: 14px; }
+.sovereignty-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #f97316, #fbbf24);
+}
+.sovereignty-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.28);
+}
+.sovereignty-card-num {
+  position: absolute;
+  top: 16px;
+  right: 22px;
+  font-family: 'Inter', sans-serif;
+  font-size: 44px;
+  font-weight: 800;
+  color: rgba(194,65,12,0.12);
+  line-height: 1;
+  pointer-events: none;
+}
+.sovereignty-card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c2410c;
+  background: linear-gradient(135deg, rgba(249,115,22,0.18), rgba(194,65,12,0.05));
+  margin-bottom: 20px;
+}
 .sovereignty-card-title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--primary-dark);
   margin-bottom: 14px;
+  line-height: 1.5;
 }
 .sovereignty-card-body {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text-muted);
-  line-height: 1.8;
+  line-height: 1.85;
 }
 
 /* ===== Architecture ===== */
@@ -1213,6 +1332,9 @@ img { max-width: 100%; display: block; }
   .footer-brand { grid-column: 1 / -1; }
   .footer-qr { grid-column: span 1; }
 }
+@media (max-width: 1100px) {
+  .sovereignty-cards { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 768px) {
   .container { padding: 0 24px; }
   .nav-inner { padding: 0 24px; }
@@ -1223,6 +1345,7 @@ img { max-width: 100%; display: block; }
   .promise-cards { grid-template-columns: 1fr; }
   .product-grid { grid-template-columns: 1fr; }
   .opc-layout { grid-template-columns: 1fr; }
+  .sovereignty-cards { grid-template-columns: 1fr; }
   .compliance-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-top { grid-template-columns: 1fr; }
   .section-title { font-size: 28px; }
@@ -1230,7 +1353,7 @@ img { max-width: 100%; display: block; }
   .hero { min-height: auto; padding: 100px 0 60px; }
   .arch-layer { flex-direction: column; text-align: center; gap: 10px; }
   .arch-layer-num { margin: 0 auto; }
-  .opc-steps-flow { flex-direction: column; gap: 0; }
+  .opc-steps-flow { flex-direction: column; gap: 8px; }
   .opc-step-arrow { transform: rotate(90deg); }
   .arch-tower { max-width: 100%; }
   .timeline { padding-left: 36px; }
@@ -1477,6 +1600,9 @@ img { max-width: 100%; display: block; }
     <div class="product-grid">
       <!-- ① OpenClaw -->
       <div class="product-card fade-in-up">
+        <div class="product-card-icon" style="color:#c2410c;background:linear-gradient(135deg,rgba(249,115,22,0.14),rgba(194,65,12,0.05));">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        </div>
         <div class="product-card-top">
           <div class="product-name">OpenClaw 引擎</div>
           <div class="product-badge">开放使用 · 免订阅</div>
@@ -1487,10 +1613,14 @@ img { max-width: 100%; display: block; }
           <div class="product-feature"><span class="product-feature-dot"></span>6大模型一键接入</div>
           <div class="product-feature"><span class="product-feature-dot"></span>7大聊天平台接入</div>
         </div>
+        <div class="product-tag">AI技能操作系统</div>
         <a href="openclaw.html" class="product-link">了解 OpenClaw <span class="product-link-arrow">→</span></a>
       </div>
       <!-- ② 智体数字人 -->
       <div class="product-card fade-in-up">
+        <div class="product-card-icon" style="color:#7c3aed;background:linear-gradient(135deg,rgba(139,92,246,0.14),rgba(124,58,237,0.05));">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="16" cy="12" r="1" fill="currentColor"/><line x1="12" y1="7" x2="12" y2="4"/><path d="M8 4h8"/></svg>
+        </div>
         <div class="product-card-top">
           <div class="product-name">智体数字人</div>
           <div class="product-badge en">2026 Q3 上线</div>
@@ -1501,6 +1631,7 @@ img { max-width: 100%; display: block; }
           <div class="product-feature"><span class="product-feature-dot"></span>四大内容场景</div>
           <div class="product-feature"><span class="product-feature-dot"></span>3D写实级驱动</div>
         </div>
+        <div class="product-tag">短视频 · 直播 · 品牌 · 知识付费</div>
         <a href="digital-human.html" class="product-link">了解智体数字人 <span class="product-link-arrow">→</span></a>
       </div>
       <!-- ③ 小龙虾AI智能盒子 -->
@@ -1608,10 +1739,31 @@ img { max-width: 100%; display: block; }
       <div class="opc-text fade-in-up">
         <p>传统创业，你需要一支队伍。找文案、找设计、找运营、找客服……人力成本堆叠，协作摩擦损耗，一个人永远跑不动一个完整的业务闭环。</p>
         <p>OPC路径，你就是那支队伍。一个智能体搞定内容生产，一个智能体接管客户服务，一个智能体驱动数据分析。你不再是管理者，而是指挥官——<span class="opc-highlight">25分钟</span>，从创意到交付，一个人完成过去一个团队一整天的工作。效率不是线性提升，是指数级跃迁：<span class="opc-highlight">30倍</span>。</p>
+        <div class="opc-capabilities">
+          <div class="opc-capability">
+            <div class="opc-capability-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></div>
+            <span>内容生产</span>
+          </div>
+          <div class="opc-capability">
+            <div class="opc-capability-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+            <span>客户服务</span>
+          </div>
+          <div class="opc-capability">
+            <div class="opc-capability-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+            <span>数据分析</span>
+          </div>
+          <div class="opc-capability">
+            <div class="opc-capability-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <span>自动运营</span>
+          </div>
+        </div>
       </div>
       <div class="data-cards fade-in-up">
         <div class="data-card">
-          <div class="data-card-label">单日内容生产</div>
+          <div class="data-card-label-row">
+            <div class="data-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+            <div class="data-card-label">单日内容生产</div>
+          </div>
           <div class="data-card-values">
             <span class="data-card-old en">8小时</span>
             <span class="data-card-arrow">→</span>
@@ -1621,7 +1773,10 @@ img { max-width: 100%; display: block; }
           </div>
         </div>
         <div class="data-card">
-          <div class="data-card-label">客户服务响应</div>
+          <div class="data-card-label-row">
+            <div class="data-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+            <div class="data-card-label">客户服务响应</div>
+          </div>
           <div class="data-card-values">
             <span class="data-card-old">人工轮班</span>
             <span class="data-card-arrow">→</span>
@@ -1631,7 +1786,10 @@ img { max-width: 100%; display: block; }
           </div>
         </div>
         <div class="data-card">
-          <div class="data-card-label">人力成本</div>
+          <div class="data-card-label-row">
+            <div class="data-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <div class="data-card-label">人力成本</div>
+          </div>
           <div class="data-card-values">
             <span class="data-card-old">月薪+社保</span>
             <span class="data-card-arrow">→</span>
@@ -1691,17 +1849,20 @@ img { max-width: 100%; display: block; }
     </div>
     <div class="sovereignty-cards">
       <div class="sovereignty-card fade-in-up">
-        <div class="sovereignty-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <div class="sovereignty-card-num en">01</div>
+        <div class="sovereignty-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
         <div class="sovereignty-card-title">数据主权 — 你的数据，留在你的地盘</div>
         <div class="sovereignty-card-body">云端AI意味着你的数据上传、存储、分析都在别人的服务器上。你无法审计流转路径，无法确认是否被训练复用，更无法保证泄露时的响应速度。智体共合的AI硬件将推理与存储100%留在本地——U盘拔走零残留、硬盘断网照样跑、盒子本地优先云端可选。数据不出门，是物理级的保障，不是协议级的承诺。</div>
       </div>
       <div class="sovereignty-card fade-in-up">
-        <div class="sovereignty-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <div class="sovereignty-card-num en">02</div>
+        <div class="sovereignty-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
         <div class="sovereignty-card-title">成本自主 — 一次性买断，没有月费陷阱</div>
         <div class="sovereignty-card-body">订阅制AI工具的年费累计往往远超硬件成本，而且你永远在"租用"而非"拥有"——停付即停用，数据即丢失。智体共合的硬件产品全部买断制：U盘¥999、硬盘¥1,999起、盒子¥8,999起。一次支付，终身使用，没有续费焦虑，没有数据赎回风险。你花的每一分钱，都在积累属于你的资产。</div>
       </div>
       <div class="sovereignty-card fade-in-up">
-        <div class="sovereignty-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+        <div class="sovereignty-card-num en">03</div>
+        <div class="sovereignty-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
         <div class="sovereignty-card-title">智能体自主 — 你指挥，它执行，协议公开透明</div>
         <div class="sovereignty-card-body">传统AI助手是封闭生态的附庸——模型、技能、调度逻辑全由平台决定，你只能用，不能改。智体共合的智能体架构基于A2A开放协议，引擎可定制、技能可编排、模型可切换、行为可审计。你的智能体听从你的指令，运行在你的设备，服务于你的业务——自主，不是被订阅绑定。</div>
       </div>
@@ -1889,6 +2050,7 @@ img { max-width: 100%; display: block; }
           <a href="computing-network.html">龙虾算网</a>
           <a href="federation.html">智体联邦</a>
           <a href="lingxia-platform.html">灵虾平台</a>
+          <a href="https://github.com/aikeeper-zk/AIbox" target="_blank" rel="noopener noreferrer">开源仓库</a>
         </div>
       </div>
       <div>

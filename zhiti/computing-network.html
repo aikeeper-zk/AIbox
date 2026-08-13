@@ -310,11 +310,32 @@ img { max-width: 100%; display: block; }
   content: '';
   position: absolute;
   top: -50%;
-  right: -20%;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(249,115,22,0.2) 0%, transparent 70%);
+  right: -15%;
+  width: 460px;
+  height: 460px;
+  background: radial-gradient(circle, rgba(249,115,22,0.25) 0%, transparent 70%);
   border-radius: 50%;
+}
+.sub-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -55%;
+  left: -10%;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(255,237,213,0.14) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.sub-hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.6), transparent 75%);
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.6), transparent 75%);
+  pointer-events: none;
 }
 .sub-hero-content {
   max-width: var(--max-width);
@@ -337,6 +358,39 @@ img { max-width: 100%; display: block; }
   max-width: 700px;
   margin: 0 auto;
   line-height: 1.8;
+}
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 44px;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  text-align: center;
+  padding: 18px 30px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  min-width: 150px;
+  transition: transform 0.3s, background 0.3s;
+}
+.hero-stat:hover {
+  transform: translateY(-4px);
+  background: rgba(255,255,255,0.16);
+}
+.hero-stat-num {
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.hero-stat-label {
+  font-size: 13px;
+  color: rgba(255,255,255,0.8);
 }
 
 /* ===== Section Header ===== */
@@ -615,6 +669,232 @@ img { max-width: 100%; display: block; }
   display: inline-block;
 }
 
+/* ===== Icon Box (shared) ===== */
+.icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: linear-gradient(135deg, #f97316, #c2410c);
+  flex-shrink: 0;
+  box-shadow: 0 6px 16px rgba(194,65,12,0.25);
+}
+
+/* ===== Core Value Points ===== */
+.core-value-points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1000px;
+  margin: 56px auto 0;
+}
+.core-value-point {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 26px 22px;
+  box-shadow: var(--shadow);
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.core-value-point:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+.core-value-point-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 6px;
+}
+.core-value-point-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* ===== Architecture Layers (upgrade) ===== */
+.arch-layer {
+  box-shadow: 0 6px 22px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+.arch-layer:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+}
+
+/* ===== Dual Track (upgrade) ===== */
+.track-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  padding: 36px 28px;
+}
+.track-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #f97316, #fbbf24);
+}
+.track-card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c2410c;
+  background: linear-gradient(135deg, rgba(249,115,22,0.18), rgba(194,65,12,0.05));
+  margin-bottom: 16px;
+}
+.track-card-title { font-size: 18px; }
+.track-card-flow { gap: 10px; }
+.flow-step {
+  background: rgba(249,115,22,0.12);
+  color: var(--primary);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.track-card-flow .arrow { font-size: 14px; font-weight: 700; }
+
+/* ===== Scale Table (upgrade) ===== */
+.scale-table { max-width: 860px; }
+.scale-table tbody td { transition: background 0.25s; }
+.scale-table tbody td:first-child { font-weight: 700; color: var(--primary-dark); }
+.scale-table tbody tr:hover td { background: #fff7ed; }
+.scale-table tbody td .num-highlight { font-size: 17px; }
+.scale-note {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 20px;
+}
+
+/* ===== Compliance (upgrade) ===== */
+.compliance-item { border-radius: 16px; }
+.compliance-item-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c2410c;
+  background: linear-gradient(135deg, rgba(249,115,22,0.16), rgba(194,65,12,0.04));
+}
+
+/* ===== Roadmap Timeline (upgrade) ===== */
+.roadmap-stages { position: relative; }
+.roadmap-stages::before {
+  content: '';
+  position: absolute;
+  top: 26px;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: linear-gradient(90deg, #f97316, #c2410c, #7c2d12);
+  border-radius: 3px;
+}
+.roadmap-stage {
+  position: relative;
+  padding: 52px 20px 24px;
+  border-radius: 20px;
+}
+.roadmap-stage::before {
+  content: '';
+  position: absolute;
+  top: 19px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 4px solid var(--accent);
+  box-shadow: 0 0 0 5px rgba(249,115,22,0.15);
+  z-index: 1;
+}
+.roadmap-stage:last-child {
+  border: 1.5px solid rgba(249,115,22,0.35);
+}
+
+/* ===== Join Steps ===== */
+.join-section { background: var(--warm-bg); }
+.join-steps {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.join-step {
+  flex: 1;
+  background: #fff;
+  border-radius: 20px;
+  padding: 36px 28px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.join-step:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+.join-step-num {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  font-size: 40px;
+  font-weight: 800;
+  font-family: 'Inter', sans-serif;
+  color: rgba(194,65,12,0.1);
+  line-height: 1;
+  pointer-events: none;
+}
+.join-step-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: linear-gradient(135deg, #f97316, #c2410c);
+  box-shadow: 0 8px 20px rgba(194,65,12,0.3);
+}
+.join-step-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 10px;
+}
+.join-step-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.join-step-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--accent);
+  padding: 0 18px;
+}
+
 /* ===== CTA ===== */
 .cta-section {
   background: linear-gradient(135deg, #7c2d12 0%, #c2410c 100%);
@@ -789,6 +1069,15 @@ img { max-width: 100%; display: block; }
   .arch-layer { flex-direction: column; text-align: center; gap: 8px; }
   .arch-layer-num { margin: 0 auto; }
   .core-value-text { font-size: 16px; }
+  .core-value-points { grid-template-columns: 1fr; margin-top: 36px; }
+  .hero-stats { gap: 14px; margin-top: 32px; }
+  .hero-stat { min-width: 130px; padding: 14px 18px; }
+  .hero-stat-num { font-size: 24px; }
+  .join-steps { flex-direction: column; }
+  .join-step-arrow { transform: rotate(90deg); padding: 12px 0; }
+  .roadmap-stages::before { display: none; }
+  .roadmap-stage { padding-top: 24px; }
+  .roadmap-stage::before { display: none; }
 }
 @media (max-width: 480px) {
   .sub-hero-title { font-size: 22px; }
@@ -901,9 +1190,28 @@ img { max-width: 100%; display: block; }
 
 <!-- ===== Sub Hero ===== -->
 <section class="sub-hero">
+  <div class="sub-hero-grid"></div>
   <div class="sub-hero-content fade-in-up">
     <h1 class="sub-hero-title">龙虾算网</h1>
     <p class="sub-hero-subtitle">让每一台设备，成为AI的基础设施<br>基于小龙虾AI盒子的分布式AI算力共享网络——闲置算力，不止闲置。</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num num">1000+</div>
+        <div class="hero-stat-label">首批入网节点</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num num">7×24</div>
+        <div class="hero-stat-label">全时在线调度</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num num">100%</div>
+        <div class="hero-stat-label">数据本地化</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num num">0</div>
+        <div class="hero-stat-label">月费订阅</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -916,6 +1224,29 @@ img { max-width: 100%; display: block; }
     <div class="core-value-text fade-in-up">
       <p>中小微企业不需要一座发电站，需要身边就有一盏灯。</p>
       <p style="margin-top:20px;">不是去买算力，而是<span class="highlight">让算力从你身边生长出来</span>。</p>
+    </div>
+    <div class="core-value-points">
+      <div class="core-value-point fade-in-up">
+        <div class="icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+        <div>
+          <div class="core-value-point-title">闲置算力即资产</div>
+          <div class="core-value-point-desc">AI盒子闲置时自动接入网络，闲时算力转化为被动收益。</div>
+        </div>
+      </div>
+      <div class="core-value-point fade-in-up">
+        <div class="icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div>
+          <div class="core-value-point-title">就近调度低延迟</div>
+          <div class="core-value-point-desc">任务就近分配至区域算力池，响应更快、传输更安全。</div>
+        </div>
+      </div>
+      <div class="core-value-point fade-in-up">
+        <div class="icon-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 019.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div>
+        <div>
+          <div class="core-value-point-title">绿色低碳运行</div>
+          <div class="core-value-point-desc">边缘节点低功耗运行，调度优先选择绿色电力区域。</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -992,19 +1323,23 @@ img { max-width: 100%; display: block; }
     </div>
     <div class="track-cards">
       <div class="track-card fade-in-up">
-        <div class="track-card-icon">🪙</div>
+        <div class="track-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M14.5 9a2.5 2.5 0 00-2.5-2c-1.6 0-2.5 1-2.5 2s.9 2 2.5 2 2.5 1 2.5 2-.9 2-2.5 2a2.5 2.5 0 01-2.5-2"/><line x1="12" y1="6" x2="12" y2="18"/></svg></div>
         <div class="track-card-title">轨道一：算力积分</div>
         <div class="track-card-desc">贡献闲置算力 → 赚取算力积分 → 兑换AI服务与资源。积分在生态内流通，形成闭环激励。</div>
         <div class="track-card-flow">
-          贡献算力 <span class="arrow">→</span> 赚积分 <span class="arrow">→</span> 兑换服务
+          <span class="flow-step">贡献算力</span><span class="arrow">→</span>
+          <span class="flow-step">赚取积分</span><span class="arrow">→</span>
+          <span class="flow-step">兑换服务</span>
         </div>
       </div>
       <div class="track-card fade-in-up">
-        <div class="track-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+        <div class="track-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
         <div class="track-card-title">轨道二：Agent服务法币通道</div>
         <div class="track-card-desc">开发者部署Agent服务 → 用户以法币消费 → 开发者获得真实收入。法币通道面向企业客户，合规结算。</div>
         <div class="track-card-flow">
-          部署Agent <span class="arrow">→</span> 法币消费 <span class="arrow">→</span> 开发者收益
+          <span class="flow-step">部署Agent</span><span class="arrow">→</span>
+          <span class="flow-step">法币消费</span><span class="arrow">→</span>
+          <span class="flow-step">开发者收益</span>
         </div>
       </div>
     </div>
@@ -1043,12 +1378,23 @@ img { max-width: 100%; display: block; }
           <td>≈ <span class="num-highlight num">771</span> 张 H100</td>
         </tr>
         <tr>
-          <td>国家级</td>
+          <td>区县级</td>
           <td><span class="num-highlight num">50,000</span> 台</td>
           <td>≈ <span class="num-highlight num">3,857</span> 张 H100</td>
         </tr>
+        <tr>
+          <td>省市级</td>
+          <td><span class="num-highlight num">500,000+</span> 台</td>
+          <td>≈ <span class="num-highlight num">38,500+</span> 张 H100</td>
+        </tr>
+        <tr>
+          <td>国家级</td>
+          <td><span class="num-highlight num">10,000,000+</span> 台</td>
+          <td>≈ <span class="num-highlight num">770,000+</span> 张 H100</td>
+        </tr>
       </tbody>
     </table>
+    <p class="scale-note">* 等效算力按单台AI盒子平均算力贡献推算，实际规模以节点配置与网络调度效率为准。</p>
   </div>
 </section>
 
@@ -1061,49 +1407,49 @@ img { max-width: 100%; display: block; }
     </div>
     <div class="compliance-list">
       <div class="compliance-item fade-in-up">
-        <div class="compliance-item-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></div>
+        <div class="compliance-item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></div>
         <div>
           <div class="compliance-item-title">算法备案100%</div>
           <div class="compliance-item-desc">所有调度与推理算法均完成备案，可追溯、可审查。</div>
         </div>
       </div>
       <div class="compliance-item fade-in-up">
-        <div class="compliance-item-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <div class="compliance-item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
         <div>
           <div class="compliance-item-title">数据本地化加密</div>
           <div class="compliance-item-desc">用户数据100%本地化存储与加密传输，不经云端、不留痕迹。</div>
         </div>
       </div>
       <div class="compliance-item fade-in-up">
-        <div class="compliance-item-icon">✅</div>
+        <div class="compliance-item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg></div>
         <div>
           <div class="compliance-item-title">信创全栈适配</div>
           <div class="compliance-item-desc">支持鲲鹏、龙芯、海光、飞腾等国产芯片及麒麟、统信操作系统。</div>
         </div>
       </div>
       <div class="compliance-item fade-in-up">
-        <div class="compliance-item-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
+        <div class="compliance-item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
         <div>
           <div class="compliance-item-title">AI内容双重标识</div>
           <div class="compliance-item-desc">所有AI生成内容均标注水印与元数据双重标识，可溯源、可识别。</div>
         </div>
       </div>
       <div class="compliance-item fade-in-up">
-        <div class="compliance-item-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <div class="compliance-item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
         <div>
           <div class="compliance-item-title">积分法币结算</div>
           <div class="compliance-item-desc">算力积分与法币双轨结算，积分仅限生态内流通，不涉及虚拟货币发行。</div>
         </div>
       </div>
       <div class="compliance-item fade-in-up">
-        <div class="compliance-item-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 22c4 0 8-3.58 8-8s-3.58-8-8-8c-2.27 0-4.54.94-6.16 2.56C3.27 10.13 1 13.27 1 17.59c0 .78.63 1.41 1.41 1.41H11z"/></svg></div>
+        <div class="compliance-item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 22c4 0 8-3.58 8-8s-3.58-8-8-8c-2.27 0-4.54.94-6.16 2.56C3.27 10.13 1 13.27 1 17.59c0 .78.63 1.41 1.41 1.41H11z"/></svg></div>
         <div>
           <div class="compliance-item-title">绿色算力</div>
           <div class="compliance-item-desc">边缘节点低功耗运行，算力调度优先选择绿色电力区域，降低碳排放。</div>
         </div>
       </div>
       <div class="compliance-item fade-in-up" style="grid-column: 1 / -1;">
-        <div class="compliance-item-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="compliance-item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <div>
           <div class="compliance-item-title">安全审计与合规报告</div>
           <div class="compliance-item-desc">定期发布安全审计报告与合规白皮书，全链路可验证、可监管。</div>
@@ -1142,8 +1488,40 @@ img { max-width: 100%; display: block; }
       <div class="roadmap-stage fade-in-up">
         <div class="roadmap-stage-version en">V3.0</div>
         <div class="roadmap-stage-name">网络期</div>
-        <div class="roadmap-stage-desc">5万台+国家级算力网络，跨区域调度，DePIN底座全面运行</div>
+        <div class="roadmap-stage-desc">千万台级国家级算力网络，跨区域调度，DePIN底座全面运行</div>
         <div class="roadmap-stage-milestone en">M18+</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Join Steps ===== -->
+<section class="join-section section-padding">
+  <div class="container">
+    <div class="section-header fade-in-up">
+      <h2 class="section-title">三步加入龙虾算网</h2>
+      <p class="section-subtitle">接入盒子，贡献算力，即刻获得持续收益</p>
+    </div>
+    <div class="join-steps">
+      <div class="join-step fade-in-up">
+        <div class="join-step-num en">01</div>
+        <div class="join-step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
+        <div class="join-step-title">接入盒子</div>
+        <div class="join-step-desc">将小龙虾AI盒子接入网络，完成节点注册与安全校验。</div>
+      </div>
+      <div class="join-step-arrow en">→</div>
+      <div class="join-step fade-in-up">
+        <div class="join-step-num en">02</div>
+        <div class="join-step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="join-step-title">贡献算力</div>
+        <div class="join-step-desc">闲置算力自动参与智能调度，优先就近承接推理任务。</div>
+      </div>
+      <div class="join-step-arrow en">→</div>
+      <div class="join-step fade-in-up">
+        <div class="join-step-num en">03</div>
+        <div class="join-step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <div class="join-step-title">持续收益</div>
+        <div class="join-step-desc">按贡献计量获得算力积分，可兑换AI服务与生态权益。</div>
       </div>
     </div>
   </div>
@@ -1197,6 +1575,7 @@ img { max-width: 100%; display: block; }
           <a href="computing-network.html">龙虾算网</a>
           <a href="federation.html">智体联邦</a>
           <a href="lingxia-platform.html">灵虾平台</a>
+          <a href="https://github.com/aikeeper-zk/AIbox" target="_blank" rel="noopener noreferrer">开源仓库</a>
         </div>
       </div>
       <div>
