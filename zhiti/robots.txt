@@ -1,0 +1,52 @@
+# robots.txt — 智体共合 https://594agent.com
+# 允许主流搜索引擎与 AI 检索/训练爬虫抓取，提升 AI 可见度
+
+User-agent: *
+Allow: /
+Disallow: /*.json$
+
+# —— 搜索引擎 ——
+User-agent: Baiduspider
+Allow: /
+
+User-agent: Sogou web spider
+Allow: /
+
+User-agent: 360Spider
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+# —— AI 检索与问答 ——
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Diffbot
+Allow: /
+
+Sitemap: https://594agent.com/sitemap.xml
