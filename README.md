@@ -2,9 +2,10 @@
 
 > 你的 AI，由你掌控。
 
-智体共合（智体共合科技有限公司）官方开源仓库，包含 **官网网站** 与 **Z-Claw 便携式 AI 智能体** 两大核心项目。
+智体共合（智体共合科技（无锡）有限公司）官方开源仓库，包含 **官网网站**、**智探 GEO 服务** 与 **Z-Claw 便携式 AI 智能体** 三大核心项目。
 
-- 🌐 官网：[www.594agent.com](https://www.594agent.com)
+- 🌐 官网：[594agent.com](https://594agent.com)
+- 🌐 智探 GEO：[594agent.com/GEO](https://594agent.com/GEO/)
 - 📧 商务邮箱：[shangwu@594agent.com](mailto:shangwu@594agent.com)
 
 ---
@@ -13,7 +14,8 @@
 
 ```
 AIbox/
-├── zhiti/          # 智体共合官网（纯静态 HTML 网站）
+├── zhiti/          # 智体共合官网（纯静态 HTML 网站，部署到 /）
+├── GEO/            # 智探 GEO 服务落地页（部署到 /GEO/）
 ├── zclaw/          # Z-Claw 便携式 AI 智能体（核心产品）
 ├── gongzhonghao.jpg # 微信公众号二维码
 └── README.md       # 本文件
@@ -29,7 +31,7 @@ AIbox/
 
 | 文件 | 页面 | 说明 |
 |------|------|------|
-| `index.html` | 首页 | 产品总览、Agent 俱乐部入口 |
+| `index.html` | 首页 | 产品总览（含智探 GEO 入口）、Agent 俱乐部入口 |
 | `about.html` | 关于我们 | 公司介绍 |
 | `ai-box.html` | AI 智能盒 | 小龙虾 AI 智能盒产品页 |
 | `openclaw.html` | OpenClaw | 开源智能体引擎 |
@@ -55,6 +57,39 @@ npx serve zhiti
 ```
 
 访问 `http://localhost:8000` 即可。
+
+---
+
+## 🔍 GEO/ — 智探 GEO 服务
+
+智探 GEO 是智体共合旗下的 **GEO（生成式引擎优化）全链路服务**：通过诊断 → 词包 → 内容 → 技术 → 监测五个环节，帮企业在豆包、DeepSeek、通义千问等 AI 回答中「被看见、被推荐」。坚持三不承诺（不承诺 AI 排名 / 收录 / 固定线索量），以透明数据报告呈现进展。
+
+纯静态站点，部署到 `https://594agent.com/GEO/`。
+
+### 文件说明
+
+| 文件 | 说明 |
+|------|------|
+| `index.html` | 服务落地页：五环节、价目、三不承诺、FAQ、开源白皮书展示 |
+| `process.html` | **交互式全流程演示页**：进入视口自动播放五步动画，一眼看懂 GEO 如何起效 |
+| `llms.txt` | 面向 AI 检索的结构化站点说明 |
+| `sitemap.xml` / `robots.txt` | 站点索引（含 AI 爬虫许可声明） |
+| `assets/` | LOGO、封面图、介绍文档 PDF、开源白皮书 PDF |
+
+### 开源白皮书
+
+`GEO/assets/为品牌取证_智探GEO2026白皮书_v2.1_正式版.pdf`（59 页，v2.1 正式版）
+
+《为品牌取证：智探 GEO 2026 生成式引擎优化白皮书》——以效度理论审查 GEO 的证据基础，形式化生成式引擎可见性机制，提出「上下文席位」与「证据保真度」两个测量构造。可在落地页下载，或在 `index.html#whitepaper` 查看介绍。
+
+### 本地预览
+
+从**项目根目录**启动静态服务器（目录名 `GEO` 与线上路径一致，可真实还原线上 URL）：
+
+```bash
+python -m http.server 8000
+# 访问 http://localhost:8000/GEO/ 与 http://localhost:8000/GEO/process.html
+```
 
 ---
 
@@ -113,6 +148,7 @@ zclaw/
 | 智体联邦 | 去中心化智能体协作网络 | `zhiti/federation.html` |
 | 算力网络 | 去中心化算力基础设施 | `zhiti/computing-network.html` |
 | 智体数字人 | 3D 写实数字人内容生产 | `zhiti/digital-human.html` |
+| 智探 GEO | GEO 生成式引擎优化全链路服务 | `GEO/index.html`、`GEO/process.html` |
 
 ---
 
@@ -128,10 +164,11 @@ zclaw/
 
 ## 联系方式
 
-- 🌐 官网：[www.594agent.com](https://www.594agent.com)
+- 🌐 官网：[594agent.com](https://594agent.com)
+- 🌐 智探 GEO：[594agent.com/GEO](https://594agent.com/GEO/)
 - 📧 商务邮箱：[shangwu@594agent.com](mailto:shangwu@594agent.com)
 - 📱 微信公众号：见 `gongzhonghao.jpg`（或官网首页底部）
 
 ---
 
-© 智体共合科技有限公司。保留所有权利。
+© 智体共合科技（无锡）有限公司。保留所有权利。

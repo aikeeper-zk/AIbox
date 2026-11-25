@@ -391,7 +391,7 @@ xattr -rd com.apple.quarantine ~/Desktop/Z-Claw
 
 ## 关于智体共合
 
-**智体共合**（智体共合科技有限公司）是一家专注于 AI 智能体与分布式智能协作网络的高科技企业，致力于让每个个人与企业都能轻松拥有专属 AI 智能体。
+**智体共合**（智体共合科技（无锡）有限公司）是一家专注于 AI 智能体与分布式智能协作网络的高科技企业，致力于让每个个人与企业都能轻松拥有专属 AI 智能体。
 
 - 🌐 官网：[www.594agent.com](https://www.594agent.com)
 - 📧 商务邮箱：[shangwu@594agent.com](mailto:shangwu@594agent.com)
